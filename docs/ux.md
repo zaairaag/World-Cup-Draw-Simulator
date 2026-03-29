@@ -1,12 +1,10 @@
 # UX e acessibilidade
 
-Recursos de acessibilidade, sistema de tema, motion e SEO.
+Acessibilidade, tema, motion e SEO.
 
 ---
 
 ## Acessibilidade
-
-Itens tratados como requisitos de produto, não como polimento:
 
 | Recurso                    | Implementação                                               |
 | -------------------------- | ----------------------------------------------------------- |
@@ -17,19 +15,14 @@ Itens tratados como requisitos de produto, não como polimento:
 | Skip link                  | Link para `#main-content` visível em focus                  |
 | Focus management em modais | Foco inicial controlado, `Escape` para fechar               |
 | Feedback de erro e sucesso | Texto visível, não apenas cor                               |
-| Dark mode                  | Toggle com persistência e modo claro como padrão inicial    |
+| Dark mode                  | Toggle com persistência e modo claro como padrão            |
 | Reduced motion             | `prefers-reduced-motion` respeitado em todas as animações   |
 
 ---
 
-## Tema centralizado e tipado
+## Tema
 
-O sistema visual possui:
-
-- tema `light` e tema `dark` com 29 cores semânticas cada
-- `ThemeModeProvider` com tema claro como padrão inicial
-- tokens compartilhados de cor, espaçamento, sombras, tipografia e motion
-- persistência da preferência em `localStorage`
+Tema `light` e `dark` com 29 cores semânticas, tokens compartilhados e persistência em `localStorage`.
 
 | Token       | Valores                                        |
 | ----------- | ---------------------------------------------- |
@@ -43,24 +36,23 @@ O sistema visual possui:
 
 ## Motion
 
-As animações foram mantidas curtas e funcionais:
+Animações curtas e funcionais:
 
-- entrada do painel de resultado
-- reveal escalonado dos grupos (stagger step: 90ms)
-- microinterações de hover/focus
-- transições de tema e superfícies
-
-Também foi adicionado `prefers-reduced-motion`, para o comportamento continuar acessível quando o usuário pede menos animação.
+- Entrada do painel de resultado
+- Reveal escalonado dos grupos (stagger: 90ms)
+- Microinterações de hover/focus
+- Transições de tema e superfícies
+- `prefers-reduced-motion` desabilita tudo
 
 ---
 
-## SEO e meta tags
+## SEO
 
 O `index.html` inclui:
 
-- Open Graph tags completas (title, description, image, locale)
+- Open Graph (title, description, image, locale)
 - Twitter Card (summary_large_image)
-- JSON-LD structured data (WebApplication schema)
+- JSON-LD (WebApplication schema)
 - Favicon SVG + PNG 32px + Apple Touch Icon
-- Web manifest (`manifest.json`)
-- Font preloading com `media="print"` + `onload` para não bloquear render
+- Web manifest
+- Font preloading sem bloqueio de render
