@@ -84,6 +84,14 @@ Aplicacao local: `http://localhost:5173`
 
 ---
 
+## 🌐 Deploy
+
+- Produção: `https://worldcupdraw.zairagoncalves.com`
+- Hospedagem: Vercel
+- Integração com GitHub: deploy automático a partir do repositório conectado
+
+---
+
 ## 🧪 Como validar
 
 Ultima execução local de `npm run coverage`:
@@ -105,6 +113,13 @@ npm run coverage     # suite completa com cobertura
 npm run validate     # typecheck + lint + format check + testes (gate unico)
 ```
 
+### CI/CD
+
+- GitHub Actions em `.github/workflows/ci.yml`
+- Pipeline executa `npm ci`, `npm run validate` e `npm run build`
+- Disparo em `push` para `main` e em `pull_request`
+- Configuração da Vercel versionada em `vercel.json`
+
 ### Scripts disponiveis
 
 | Script                    | Comando real                                    | Descricao                         |
@@ -124,12 +139,12 @@ npm run validate     # typecheck + lint + format check + testes (gate unico)
 
 O build gera 3 chunks otimizados com vendor splitting:
 
-| Arquivo      | Tamanho | Gzip    | Conteudo                                    |
-| ------------ | ------- | ------- | ------------------------------------------- |
-| `vendor.js`  | 157 kB  | 51.6 kB | React, React DOM, React Router              |
-| `index.js`   | 122 kB  | 28.0 kB | Codigo da aplicacao, dominio, componentes   |
-| `styles.js`  | 31 kB   | 11.9 kB | styled-components runtime                   |
-| `index.html` | 4.4 kB  | 1.3 kB  | HTML com meta tags, JSON-LD e font preloads |
+| Arquivo      | Tamanho  | Gzip    | Conteudo                                    |
+| ------------ | -------- | ------- | ------------------------------------------- |
+| `vendor.js`  | 157 kB   | 51.6 kB | React, React DOM, React Router              |
+| `index.js`   | 125.6 kB | 28.4 kB | Codigo da aplicacao, dominio, componentes   |
+| `styles.js`  | 31 kB    | 11.9 kB | styled-components runtime                   |
+| `index.html` | 4.4 kB   | 1.3 kB  | HTML com meta tags, JSON-LD e font preloads |
 
 Total gzip: **~93 kB**
 
@@ -194,7 +209,6 @@ Todos os extras opcionais do enunciado foram cobertos:
 | Testes de integracao             | **Atendido** | Busca + sorteio, restore, swap, historico, compartilhamento e tema    |
 | ESLint + Prettier                | **Atendido** | ESLint 9 flat config + Prettier + Husky + lint-staged + commitlint    |
 | README completo                  | **Atendido** | Como rodar, testar, decisoes, regras, limitacoes, melhorias futuras   |
-| AI_USAGE.md                      | **Atendido** | Ferramentas, etapas, prompts, adaptacoes manuais e validacao          |
 | Extras opcionais                 | **Atendido** | Potes, confederacoes, seed, share, historico, motion e a11y expandida |
 
 Essa tabela existe para deixar claro que o projeto nao apenas "parece completo", mas foi deliberadamente cruzado contra o enunciado.
@@ -289,7 +303,7 @@ src/
 
   theme/                        # tokens, global styles e provider de tema
     theme.ts                    #   light + dark com 29 cores semanticas
-    themeMode.tsx               #   toggle com persistencia e system preference
+    themeMode.tsx               #   toggle com persistencia e modo claro por padrao
     themeModeContext.ts          #   contexto de tema
     globalStyles.ts             #   reset e estilos base
     styled.d.ts                 #   augmentacao de tipos para styled-components
@@ -608,7 +622,7 @@ Trade-off adotado:
 O sistema visual possui:
 
 - tema `light` e tema `dark` com 29 cores semanticas cada
-- `ThemeModeProvider` com deteccao de `prefers-color-scheme`
+- `ThemeModeProvider` com tema claro como padrao inicial
 - tokens compartilhados de cor, espacamento, sombras, tipografia e motion
 - persistencia da preferencia em `localStorage`
 
@@ -644,7 +658,7 @@ O trade-off aceito aqui foi carregar uma camada de roteamento que hoje parece pe
 ### 8. Provider stack
 
 ```typescript
-ThemeModeProvider                   // tema light/dark + persist + system preference
+ThemeModeProvider                   // tema light/dark + persist + default light
   └─ TeamsProvider(initialState)    // catalogo + selectedIds + auto-persist
       └─ DrawProvider(initialState) // settings + result + status + auto-persist
           └─ App (BrowserRouter + Layout + Routes)
@@ -705,7 +719,7 @@ Itens tratados como requisitos de produto, nao como polimento:
 | Skip link                  | Link para `#main-content` visivel em focus                  |
 | Focus management em modais | Foco inicial controlado, `Escape` para fechar               |
 | Feedback de erro e sucesso | Texto visivel, nao apenas cor                               |
-| Dark mode                  | Toggle com persistencia + deteccao de system preference     |
+| Dark mode                  | Toggle com persistencia e modo claro como padrão inicial    |
 | Reduced motion             | `prefers-reduced-motion` respeitado em todas as animacoes   |
 
 ### SEO e meta tags
