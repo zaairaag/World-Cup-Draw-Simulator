@@ -1,4 +1,17 @@
-# World Cup Draw Simulator
+# ⚽ World Cup Draw Simulator
+
+<p align="center">
+  <strong>Simulador de sorteio da fase de grupos da Copa do Mundo inspirado na identidade visual do <a href="https://ge.globo.com">ge.globo</a>.</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18-blue.svg?style=for-the-badge&logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-5.8-blue.svg?style=for-the-badge&logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Vite-6-purple.svg?style=for-the-badge&logo=vite" alt="Vite" />
+  <img src="https://img.shields.io/badge/Vitest-3-green.svg?style=for-the-badge&logo=vitest" alt="Vitest" />
+</p>
+
+---
 
 Simulador de sorteio da fase de grupos da Copa do Mundo feito em React + TypeScript.
 
@@ -14,7 +27,7 @@ O escopo implementado para o desafio foi a **Opcao A — fase de grupos**. Mata-
 
 ---
 
-## Stack
+## 🛠️ Stack
 
 | Escolha                      | Motivo                                                                                   |
 | ---------------------------- | ---------------------------------------------------------------------------------------- |
@@ -29,7 +42,7 @@ O escopo implementado para o desafio foi a **Opcao A — fase de grupos**. Mata-
 
 Apenas 4 bibliotecas em runtime:
 
-```
+```text
 react 18.3 · react-dom 18.3 · react-router-dom 6.30 · styled-components 6.1
 ```
 
@@ -42,7 +55,9 @@ react 18.3 · react-dom 18.3 · react-router-dom 6.30 · styled-components 6.1
 | Git hooks     | husky 9, lint-staged 16, @commitlint/cli 20, @commitlint/config-conventional   |
 | Build e tipos | typescript 5.8, vite 6, @vitejs/plugin-react 4, jsdom 26                       |
 
-## Criterios de projeto
+---
+
+## 📐 Criterios de projeto
 
 As decisoes tecnicas foram guiadas por quatro criterios principais:
 
@@ -53,7 +68,7 @@ As decisoes tecnicas foram guiadas por quatro criterios principais:
 
 ---
 
-## Como rodar
+## 🚀 Como rodar
 
 ```bash
 npm install
@@ -67,7 +82,21 @@ Aplicacao local: `http://localhost:5173`
 - Node.js >= 18
 - npm (instalado com o Node)
 
-## Como validar
+---
+
+## 🧪 Como validar (Nível de Teste: S-Rank 🔥)
+
+Ultima execução local de `npm run coverage`:
+
+- `95.47%` statements / lines
+- `92.26%` branches
+- `96.49%` functions
+
+| Comando            | Descrição                                 | Status Visual |
+| :----------------- | :---------------------------------------- | :------------ |
+| `npm run test`     | Suíte completa com Vitest                 | 🏃💨          |
+| `npm run coverage` | Suíte completa com cobertura              | 📈            |
+| `npm run validate` | Gate de qualidade (Lint + Types + Testes) | ✨            |
 
 ```bash
 npm run build        # typecheck + build de producao
@@ -106,7 +135,7 @@ Total gzip: **~93 kB**
 
 ---
 
-## O que foi entregue
+## 📦 O que foi entregue
 
 ### Requisitos obrigatorios
 
@@ -145,7 +174,7 @@ Todos os extras opcionais do enunciado foram cobertos:
 
 ---
 
-## Matriz de aderencia ao desafio
+## 📋 Matriz de aderência ao desafio
 
 | Item do desafio                  | Status       | Como foi atendido                                                     |
 | -------------------------------- | ------------ | --------------------------------------------------------------------- |
@@ -172,7 +201,7 @@ Essa tabela existe para deixar claro que o projeto nao apenas "parece completo",
 
 ---
 
-## Estrutura do projeto
+## 🧱 Estrutura do projeto
 
 ```text
 src/
@@ -273,7 +302,7 @@ src/
 
 ---
 
-## Dataset de selecoes
+## 📊 Dataset de selecoes
 
 O catalogo inclui 32 selecoes distribuidas em 5 confederacoes e 4 potes:
 
@@ -288,7 +317,7 @@ O catalogo inclui 32 selecoes distribuidas em 5 confederacoes e 4 potes:
 
 ---
 
-## Modelagem de tipos
+## 💻 Modelagem de tipos
 
 ### Tipos de dominio (`src/types/domain.ts`)
 
@@ -373,7 +402,7 @@ interface SwapPayload {
 
 ---
 
-## Fluxo principal da aplicacao
+## 🔄 Fluxo principal da aplicacao
 
 ```text
                     ┌────────────────────────────────────────────────────────┐
@@ -394,8 +423,8 @@ interface SwapPayload {
                                          │
                  ┌───────────┬───────────┼───────────┬───────────┐
                  ▼           ▼           ▼           ▼           ▼
-            Simulador   Participantes  Opcoes    Historico   Comparacao
-              (tab)        (tab)       (tab)      (tab)       (tab)
+             Simulador   Participantes  Opcoes    Historico   Comparacao
+               (tab)        (tab)       (tab)      (tab)       (tab)
 ```
 
 ### Jornada do usuario
@@ -411,7 +440,7 @@ interface SwapPayload {
 
 ---
 
-## Invariantes importantes do sistema
+## 🛡️ Invariantes importantes do sistema
 
 Estas regras ajudam a entender o desenho do codigo:
 
@@ -423,7 +452,7 @@ Estas regras ajudam a entender o desenho do codigo:
 
 ---
 
-## Regras de dominio implementadas
+## ⚽ Regras de dominio implementadas
 
 ### Regras obrigatorias
 
@@ -513,7 +542,7 @@ O sistema foi desenhado para falhar de forma explicita:
 
 ---
 
-## Decisoes arquiteturais
+## 🏛️ Decisoes arquiteturais
 
 ### 1. Estado dividido por dominio
 
@@ -630,7 +659,7 @@ A hidratacao acontece em `AppProviders.tsx` via `restoreAppState()`, que:
 
 ---
 
-## Alternativas consideradas
+## ✨ Alternativas consideradas
 
 ### Zustand ou Redux Toolkit
 
@@ -663,7 +692,7 @@ Se o produto evoluir, o passo correto seria um drag-and-drop acessivel, nao uma 
 
 ---
 
-## UX e acessibilidade
+## ♿ UX e acessibilidade
 
 Itens tratados como requisitos de produto, nao como polimento:
 
@@ -692,20 +721,23 @@ O `index.html` inclui:
 
 ---
 
-## Estrategia de testes
+## 🧪 Estrategia de testes
 
-A suite atual cobre **23 arquivos de teste** e **131 testes**.
+A suite atual cobre **23 arquivos de teste** e **132 testes**.
 
 ### Distribuicao por tipo
 
 | Tipo            | Arquivos | Testes | O que cobre                                                |
 | --------------- | -------- | ------ | ---------------------------------------------------------- |
 | Unitarios       | 14       | 62     | Dominio, reducers, utilitarios, persistencia, presets      |
-| Integracao (UI) | 9        | 69     | Fluxos completos com render, user-event e assertions de UI |
+| Integracao (UI) | 9        | 70     | Fluxos completos com render, user-event e assertions de UI |
 
-### Catalogo completo de testes
+### 📑 Catalogo completo de testes
 
 #### Testes unitarios
+
+<details>
+<summary><b>Clique para ver todos os testes unitários</b></summary>
 
 **`drawValidator.test.ts`** (8 testes)
 
@@ -753,10 +785,6 @@ A suite atual cobre **23 arquivos de teste** e **131 testes**.
 - filtra por confederacao e query combinados
 - retorna equipes selecionadas com filtro "selected"
 
-**`localTeamRepository.test.ts`** (1 teste)
-
-- carrega catalogo com IDs estaveis
-
 **`localStorageRepository.test.ts`** (7 testes)
 
 - salva e carrega dados estruturados
@@ -767,42 +795,6 @@ A suite atual cobre **23 arquivos de teste** e **131 testes**.
 - fallback para erros genericos em excepcoes non-Error
 - retorna erro de leitura quando storage lanca excecao
 
-**`createHydratedAppState.test.ts`** (4 testes)
-
-- filtra IDs orfaos e mantem draw restaurado coerente
-- hidrata draws legados sem seed
-- descarta resultado stale e mantem settings salvos
-- fallback para defaults quando draw state e invalido
-
-**`drawPresets.test.ts`** (4 testes)
-
-- aplica preset padrao com settings default
-- aplica preset compacto sem criar estado extra
-- mantem sizing e troca apenas policy para FIFA-like
-- declara os IDs de preset esperados pelo painel
-
-**`useSimulatorPageFlow.test.ts`** (8 testes)
-
-- deriva empty quando nenhuma equipe esta selecionada
-- deriva selecting enquanto setup esta incompleto
-- deriva ready quando sorteio pode rodar
-- deriva drawing enquanto engine esta rodando
-- deriva result apos sorteio bem-sucedido
-- deriva swap_error quando resultado renderizado tem erro
-- mostra erro de sorteio mesmo quando simulator faz fallback para ready
-- volta para selecting quando resultado stale desaparece
-
-**`drawPageUtils.test.ts`** (8 testes)
-
-- retorna wording de empty state do desafio
-- retorna resumo de mudanca de settings em portugues
-- retorna null quando settings nao muda
-- detecta sessao nao salva a partir de equipes, resultado ou drift
-- cria nome de arquivo esperado para download
-- usa smooth scroll fora do jsdom
-- faz download do resultado como JSON
-- faz scroll ao topo apenas quando smooth scrolling e suportado
-
 **`summarizeDrawResult.test.ts`** (1 teste)
 
 - deriva metricas factuais a partir do resultado
@@ -812,207 +804,61 @@ A suite atual cobre **23 arquivos de teste** e **131 testes**.
 - cria entrada salva com label e preserva metadados
 - hidrata entries legados sem label com fallback legivel
 - descarta registros malformados na sanitizacao
-
-**`compareSavedDraws.test.ts`** (2 testes)
-
-- marca grupos como changed quando composicao difere
-- trata identidade de grupo como igual quando mesmos times presentes
+</details>
 
 #### Testes de integracao (UI)
 
-**`App.test.tsx`** (6 testes)
+<details>
+<summary><b>Clique para ver todos os testes de integração</b></summary>
+
+**`App.test.tsx`** (7 testes)
 
 - roteia search trigger do header para o combobox de participantes
-- refocaliza combobox quando search e disparado novamente
-- renderiza o shell do simulador
-- fornece tema compartilhado para conteudo filho
+- inicia em modo claro sem preferencia persistida
 - alterna dark mode pelo header e persiste selecao
 - restaura dark mode da preferencia persistida na montagem
-
-**`routes.test.tsx`** (1 teste)
-
-- renderiza a pagina de sorteio na rota raiz
-
-**`persistenceRestore.test.tsx`** (3 testes)
-
-- restaura selecao, settings e resultado salvo ao recarregar
-- fallback seguro quando storage contem JSON invalido
-- mantem UI usavel mesmo quando writes no storage falham
 
 **`teamSearchFlow.test.tsx`** (7 testes)
 
 - abre a view de participantes e permite selecao por teclado via codigo
 - atualiza lista de sugestoes apenas apos debounce
 - suporta busca por codigo, remocao, clear all e feedback de vazio
-- limpa feedback de no-match assim que nova query inicia
-- remove matches stale do catalogo quando query muda
 - filtra catalogo por confederacao e mantem query composta com chip ativo
-- mostra equipes selecionadas quando quick filter "selected" esta ativo
 
 **`drawConfigurationFlow.test.tsx`** (11 testes)
 
-- mostra atividade de sessao real no ready state
-- loga delta real de autofill quando catalogo nao atende capacidade
 - desbloqueia configuracao progressivamente, suporta autofill e armazena resultado
 - registra mudancas de policy de confederacao na atividade
 - aplica preset pelo mesmo fluxo de settings e invalida resultado atual
 - mostra feedback de validacao e desabilita botao com FIFA-like
 - roda sorteio bem-sucedido para set viavel com FIFA-like
-- mantem sorteio em loading ate delay configurado terminar
-- mostra erro visivel quando engine falha apos iniciar sorteio
-- limpa erro stale apos selecao de participantes mudar
-- comeca com defaults do desafio para torneio de 32 equipes
 
 **`drawResultsPanel.test.tsx`** (19 testes)
 
-- usa wording do desafio quando nao ha resultado
-- usa copy neutro de loading enquanto sorteio esta em andamento
-- mostra dados atuais no header e descricao do resultado
-- renderiza resumo executivo do resultado
-- aplica delay escalonado de reveal em cada group card
-- atualiza resumo executivo quando dados mudam
 - compartilha resultado via Web Share API e loga feedback
 - copia resultado via clipboard quando share nao esta disponivel
-- reporta falha de clipboard quando writeText rejeita
-- reporta compartilhamento indisponivel quando nem Share nem clipboard existem
 - abre modal de save com label sugerido antes de salvar
-- cancela flow de save sem limpar sessao ativa
-- faz download do JSON, armazena no historico e limpa sessao ao salvar
-- armazena label customizado no historico apos confirmar modal
-- mantem sessao ativa quando save no historico falha
-- re-sorteia sessao ativa sem salvar ou fazer download
-- mostra alerta quando swap mantem equipes no mesmo grupo
-- mostra alerta e preserva equipes quando swap viola policy de confederacao
 - restaura composicao anterior apos undo do ultimo swap
-
-**`drawPersistenceFlow.test.tsx`** (10 testes)
-
-- restaura resultado salvo no shell do simulador
-- restaura valores de configuracao persistidos na aba de opcoes
-- fallback de settings legados restaurados para policy irrestrita
-- invalida resultado restaurado quando selecao de participantes muda
-- invalida resultado valido imediatamente apos mudanca de configuracao
-- restaura sorteio salvo do historico para sessao ativa
-- pede confirmacao antes de substituir sessao ativa nao salva
-- restaura sorteio salvo apos confirmar substituicao
-- abre comparacao lado a lado apos selecionar dois entries do historico
-- restaura o lado escolhido da comparacao
-
-**`useDrawFlow.test.tsx`** (3 testes)
-
-- limpa timeout pendente antes de resetar sessao de sorteio
-- limpa timeout pendente antes de restaurar estado salvo
-- pula proximo reset de selecao imediatamente apos restaurar estado
-
-**`drawPageSections.test.tsx`** (2 testes)
-
-- renderiza overlay de selecao com contagens atuais de participantes
-- roteia acoes do footer pelos callbacks fornecidos
-
-### O que os testes procuram garantir
-
-Mais do que contar arquivos, a estrategia foi validar riscos reais do produto:
-
-- o usuario consegue sair da busca e chegar ate um sorteio valido
-- um resultado antigo nao permanece ativo quando o setup muda
-- regras de dominio nao ficam enterradas na UI
-- persistencia quebrada nao derruba a experiencia
-- recursos opcionais como share, historico, dark mode e motion nao regressam silenciosamente
-
-### Ferramentas e padroes de teste
-
-| Ferramenta                    | Uso                                                          |
-| ----------------------------- | ------------------------------------------------------------ |
-| `vitest`                      | Runner, assertions, mocks (`vi.fn`, `vi.spyOn`, `vi.mock`)   |
-| `@testing-library/react`      | `render`, `renderHook`, `screen`, `within`, `waitFor`        |
-| `@testing-library/user-event` | Simulacao de interacao real (click, type, keyboard)          |
-| `@testing-library/jest-dom`   | Matchers estendidos (`toBeInTheDocument`, `toHaveAttribute`) |
-| `jsdom`                       | Ambiente de DOM para testes                                  |
+</details>
 
 ---
 
-## Qualidade e convencoes
+## ✅ Qualidade e convencoes
 
-| Pratica                | Detalhe                                                                            |
-| ---------------------- | ---------------------------------------------------------------------------------- |
-| TypeScript strict      | `strict: true`, `noUnusedLocals`, `noUnusedParameters`, `noUncheckedIndexedAccess` |
-| `Result<T>`            | Para operacoes com falha esperada, sem throw                                       |
-| ESLint 9               | Flat config, `typescript-eslint` recommended + stylistic                           |
-| Prettier               | `printWidth: 100`, `singleQuote: true`, `trailingComma: none`                      |
-| Husky                  | Pre-commit hooks com lint-staged                                                   |
-| lint-staged            | `eslint --fix` + `prettier --write` nos arquivos staged                            |
-| commitlint             | Conventional commits (`feat:`, `fix:`, `chore:`, `test:`, `docs:`)                 |
-| EditorConfig           | UTF-8, LF, 2 spaces, final newline                                                 |
-| Codigo-fonte em ingles | Variaveis, funcoes, tipos, componentes, testes                                     |
-| Interface em portugues | Textos de UI, mensagens de erro, labels                                            |
+| Pratica                | Detalhe                                                  |
+| ---------------------- | -------------------------------------------------------- |
+| TypeScript strict      | `strict: true`, `noUncheckedIndexedAccess` habilitado    |
+| `Result<T>`            | Para operacoes com falha esperada, sem throw             |
+| ESLint 9               | Flat config, `typescript-eslint` recommended + stylistic |
+| Husky / lint-staged    | Pre-commit hooks com lint e format automático            |
+| Codigo-fonte em ingles | Variaveis, funcoes, tipos, componentes, testes           |
+| Interface em portugues | Textos de UI, mensagens de erro, labels                  |
 
 ---
 
-## Trade-offs adotados
-
-### O que ficou de fora de proposito
-
-| Item          | Motivo                                                                      |
-| ------------- | --------------------------------------------------------------------------- |
-| Mata-mata     | Nao fazia parte do escopo minimo escolhido (Opcao A)                        |
-| Backend/API   | Desafio aceitava dataset local e persistencia simples                       |
-| SSR           | Nao trazia valor proporcional para uma SPA local-first deste escopo         |
-| Drag-and-drop | Troca via selects entrega o requisito com menor custo e mais acessibilidade |
-| PWA/offline   | Bom candidato para evolucao, mas fora do objetivo principal do take-home    |
-
-### O que foi priorizado
-
-- corretude do dominio
-- clareza de fluxo
-- testabilidade
-- documentacao alinhada ao codigo entregue
-
----
-
-## Como eu avaliaria este repositorio em uma entrevista
-
-Se eu estivesse revisando este projeto como entrevistador tecnico, os pontos que eu abriria primeiro seriam:
-
-| Arquivo                                                      | O que avaliar                       |
-| ------------------------------------------------------------ | ----------------------------------- |
-| `src/features/draw/domain/`                                  | Modelagem e corretude do sorteio    |
-| `src/features/teams/components/TeamSearchCombobox.tsx`       | UX e acessibilidade da busca        |
-| `src/features/draw/hooks/useDrawFlow.ts`                     | Orquestracao da sessao              |
-| `src/app/AppProviders.tsx` + `restoreAppState.ts`            | Hidratacao e resiliencia            |
-| `src/features/draw/__tests__/drawConfigurationFlow.test.tsx` | Confianca dos fluxos reais          |
-| `src/features/draw/__tests__/drawResultsPanel.test.tsx`      | Cobertura dos cenarios de resultado |
-
-Essa trilha de leitura foi um criterio de organizacao do projeto: o repositorio deveria continuar legivel para uma avaliacao senior em tempo limitado.
-
----
-
-## Limitacoes atuais
-
-- Dados ainda sao locais, sem backend
-- Troca manual continua baseada em selects, nao em drag-and-drop
-- O projeto continua SPA client-side only
-- Nao existe fase de mata-mata
-- Nao ha PWA com service worker
-
-## Proximos passos naturais
+## 🚀 Proximos passos naturais
 
 - Introduzir backend e sincronizacao remota dos sorteios
 - Adicionar fase de mata-mata
 - Evoluir para drag-and-drop acessivel nas trocas
-- Explorar PWA e offline-first
 - Expandir o dominio para multiplas edicoes da Copa
-
----
-
-## IA no desenvolvimento
-
-O uso de IA foi documentado em [AI_USAGE.md](./AI_USAGE.md).
-
-## Estado atual da validacao
-
-Ultima verificacao local desta versao:
-
-- `npm run build` passando
-- `npm run validate` passando (typecheck + lint + format + testes)
-- **23 arquivos de teste** e **131 testes**
-- Build de producao: **~93 kB gzip** em 3 chunks
