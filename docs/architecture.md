@@ -133,11 +133,11 @@ Todo o `src/features/draw/domain/` é zero React — funções puras testáveis 
 
 | Módulo                       | Responsabilidade                               | Linhas |
 | ---------------------------- | ---------------------------------------------- | ------ |
-| `drawEngine.ts`              | Algoritmo de sorteio (shuffle + backtracking)  | 148    |
-| `drawValidator.ts`           | 7 validações de entrada                        | 93     |
-| `confederationPolicy.ts`     | Regra de limite por confederação               | 47     |
-| `confederationValidation.ts` | Viabilidade da distribuição antes do sorteio   | 50     |
-| `random.ts`                  | Seeded RNG (mulberry32) + Fisher-Yates shuffle | 34     |
+| `drawEngine.ts`              | Algoritmo de sorteio (shuffle + backtracking)  | 125    |
+| `drawValidator.ts`           | 7 validações de entrada                        | 75     |
+| `confederationPolicy.ts`     | Regra de limite por confederação               | 36     |
+| `confederationValidation.ts` | Viabilidade da distribuição antes do sorteio   | 42     |
+| `random.ts`                  | Seeded RNG (mulberry32) + Fisher-Yates shuffle | 27     |
 
 Regras de negócio mudam mais que a UI. Isolar o domínio garante que o algoritmo de sorteio continua previsível sob teste sem depender de render nem contexto React.
 

@@ -97,7 +97,7 @@ O catálogo inclui 32 seleções distribuídas em 5 confederações e 4 potes:
 | --- | ----------------- | ---------------------------------------------- | ----------------------- | --------------------------------- | ----------------- |
 | 1   | Argentina, Brazil | France, England, Spain                         | Canada*, Mexico*, USA\* |                                   |                   |
 | 2   | Uruguay, Colombia | Germany, Portugal, Italy, Netherlands, Belgium |                         |                                   | Morocco           |
-| 3   | Ecuador           | Croatia, Denmark, Switzerland, Poland          |                         | Japan, South Korea, Iran, Senegal |                   |
+| 3   | Ecuador           | Croatia, Denmark, Switzerland, Poland          |                         | Japan, South Korea, Iran          | Senegal           |
 | 4   | Chile             | Serbia                                         | Costa Rica              | Australia, Saudi Arabia           | Nigeria, Cameroon |
 
 \* Seleções sede (`qualificationType: "host"`)

@@ -29,7 +29,7 @@ O `TeamSearchCombobox` implementa o pattern ARIA 1.2 combobox com listbox:
 - Arrow Up/Down navega pelas sugestões sem mover o cursor do input
 - Enter seleciona a sugestão ativa
 - Escape fecha a lista e limpa o foco virtual
-- Home/End vai para a primeira/última sugestão
+- Home/End vão para a primeira/última sugestão
 - Debounce de 200ms evita atualizações excessivas durante a digitação
 
 ### Tabs

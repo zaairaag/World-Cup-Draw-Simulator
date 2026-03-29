@@ -43,7 +43,7 @@
 
 ## Validação dos resultados
 
-- **Testes automatizados**: 131 testes passando (unitários + integração) verificados após cada mudança
+- **Testes automatizados**: 132 testes passando (unitários + integração) verificados após cada mudança
 - **TypeScript strict**: zero erros de tipo com `noUncheckedIndexedAccess` habilitado
 - **ESLint + Prettier**: lint limpo em todo o código-fonte
 - **Build de produção**: `npm run build` gera bundles otimizados sem erros
