@@ -9,7 +9,10 @@ describe('AppRoutes', () => {
   it('renders the draw page on the root route', () => {
     render(
       <AppProviders>
-        <MemoryRouter initialEntries={['/']}>
+        <MemoryRouter
+          initialEntries={['/']}
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
           <AppRoutes />
         </MemoryRouter>
       </AppProviders>

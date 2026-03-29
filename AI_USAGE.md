@@ -19,25 +19,28 @@
 | Performance        | Vendor splitting, async fonts, React.memo, useMemo para estado derivado                  |
 | Tooling            | Configuracao de Husky, lint-staged, commitlint, EditorConfig                             |
 | Refatoracao        | Limpeza de codigo, remocao de dead code, padronizacao de exports                         |
+| Documentacao       | Estruturacao do README, matriz de aderencia, decisoes arquiteturais                      |
 
 ## Prompts representativos
 
-- "Faca uma auditoria de acessibilidade do projeto e implemente as melhorias"
+- "Estruture o projeto com separacao de dominio, componentes, hooks, repositorios e testes"
+- "Implemente o algoritmo de sorteio com backtracking para restricoes de confederacao e potes"
+- "Crie um combobox acessivel com navegacao por teclado e sugestoes filtradas"
 - "Configure husky, lint-staged, commitlint para conventional commits"
-- "Avalie se o codigo entrega 100% do desafio tecnico" (checklist contra enunciado)
-- "Otimize a performance para deploy em producao"
 - "Implemente light e dark mode com toggle persistido e revise as superficies para nao deixar o dark incompleto"
 - "Adicione animacoes leves com respeito a prefers-reduced-motion"
+- "Faca uma auditoria de acessibilidade do projeto e implemente as melhorias"
+- "Avalie se o codigo entrega 100% do desafio tecnico" (checklist contra enunciado)
 - "Valide se o codigo esta em ingles — variaveis, classes, etc."
 
 ## O que foi adaptado manualmente
 
 - **Decisoes de escopo**: escolha da Opcao A (fase de grupos), definicao de quais extras implementar, priorizacao de tarefas
 - **Regras de dominio**: validacao das regras de confederacao contra a logica real da FIFA, ajuste dos limites (UEFA max 2, demais max 1)
-- **Design visual**: layout inspirado no portal ge.globo.com, paleta de cores, tipografia, responsividade
+- **Design visual**: layout, paleta de cores, tipografia, responsividade
 - **Tema e motion**: definicao dos tokens visuais, criterio de quais transicoes manter e onde evitar excesso de animacao
-- **Revisao de testes**: validacao de que os cenarios cobrem o fluxo real do usuario, ajuste de timeouts e assertions
-- **Trade-offs**: manter styled-components (requisito do projeto) vs migrar para CSS Modules (melhor performance), Context API vs Zustand (simplicidade vs escala)
+- **Revisao de testes**: validacao de que os cenarios cobrem o fluxo real do usuario, ajuste de assertions
+- **Trade-offs**: manter styled-components vs CSS Modules (ergonomia vs runtime), Context API vs Zustand (simplicidade vs escala), selects vs drag-and-drop (acessibilidade vs riqueza de interacao)
 
 ## Validacao dos resultados
 
@@ -45,5 +48,6 @@
 - **TypeScript strict**: zero erros de tipo com `noUncheckedIndexedAccess` habilitado
 - **ESLint + Prettier**: lint limpo em todo o codigo fonte
 - **Build de producao**: `npm run build` gera bundles otimizados sem erros
+- **Script de validacao**: `npm run validate` roda typecheck + lint + format check + testes como gate unico
 - **Revisao manual**: cada alteracao sugerida pela IA foi revisada antes de aceitar, verificando se faz sentido no contexto do desafio e se nao quebra funcionalidade existente
 - **Checklist do enunciado**: cruzamento item a item dos requisitos obrigatorios e extras com a implementacao

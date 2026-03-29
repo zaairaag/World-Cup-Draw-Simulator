@@ -23,6 +23,15 @@ O escopo implementado para o desafio foi a **Opcao A — fase de grupos**. Mata-
 | **react-router-dom**         | Mantem a estrutura preparada para crescer, mesmo com rota unica no MVP                   |
 | **Vitest + Testing Library** | Mesma pipeline do Vite e testes orientados ao comportamento real do usuario              |
 
+## Criterios de projeto
+
+As decisoes tecnicas foram guiadas por quatro criterios principais:
+
+- **Corretude de dominio**: o sorteio precisa respeitar regras testaveis e previsiveis
+- **Clareza de fluxo**: a jornada principal deve ser simples de seguir, inclusive sob erro
+- **Baixo acoplamento**: UI, dominio e persistencia precisam evoluir sem reescrita em cascata
+- **Escalabilidade pragmatica**: preparar o terreno para crescer sem superengenharia no MVP
+
 ## Como rodar
 
 ```bash
@@ -93,6 +102,28 @@ Todos os extras opcionais do enunciado foram cobertos:
 - Quick filters por confederacao no catalogo
 - Log de atividade da sessao
 
+## Matriz de aderencia ao desafio
+
+| Item do desafio                  | Status       | Como foi atendido                                                     |
+| -------------------------------- | ------------ | --------------------------------------------------------------------- |
+| React + TypeScript               | **Atendido** | Aplicacao em React 18 com TypeScript strict                           |
+| Build tool                       | **Atendido** | Vite + Vitest                                                         |
+| Gerenciamento de estado          | **Atendido** | Context API + `useReducer`, com justificativa arquitetural abaixo     |
+| Estilizacao                      | **Atendido** | `styled-components`, com tema tipado e tokens compartilhados          |
+| Roteamento                       | **Atendido** | `react-router-dom`, mantendo a base preparada para crescimento        |
+| Catalogo com busca               | **Atendido** | Catalogo local, filtro por nome/codigo e combobox acessivel           |
+| Selecao/desselecao               | **Atendido** | Painel de selecionados + acoes de adicionar, remover e limpar         |
+| Sorteio automatico               | **Atendido** | `drawEngine` com validacao previa e resultado persistivel             |
+| Ajuste manual                    | **Atendido** | Troca entre grupos via UI controlada                                  |
+| Persistencia simples             | **Atendido** | `localStorage` encapsulado em repositorios                            |
+| Estados vazios / loading / erros | **Atendido** | Ready state, empty state, erro visivel e loading de sorteio           |
+| Tipagem de dominio               | **Atendido** | Tipos explicitamente modelados e reutilizados                         |
+| Testes unitarios                 | **Atendido** | Dominio, reducers, utilitarios e persistencia                         |
+| Testes de integracao             | **Atendido** | Busca + sorteio, restore, swap, historico, compartilhamento e tema    |
+| Extras opcionais                 | **Atendido** | Potes, confederacoes, seed, share, historico, motion e a11y expandida |
+
+Essa tabela existe para deixar claro que o projeto nao apenas "parece completo", mas foi deliberadamente cruzado contra o enunciado.
+
 ## Decisoes arquiteturais
 
 ### 1. Estado dividido por dominio
@@ -161,6 +192,47 @@ As animacoes foram mantidas curtas e funcionais:
 
 Tambem foi adicionado `prefers-reduced-motion`, para o comportamento continuar acessivel quando o usuario pede menos animacao.
 
+### 7. Rota unica, mas com fronteira de navegacao preservada
+
+Mesmo com uma unica tela no MVP, `react-router-dom` foi mantido porque:
+
+- preserva um `App shell` limpo
+- evita acoplar a tela principal ao bootstrap
+- reduz custo futuro para separar historico, detalhes de sorteio ou outras views
+
+O trade-off aceito aqui foi carregar uma camada de roteamento que hoje parece pequena, em troca de manter uma fronteira arquitetural clara desde o inicio.
+
+## Alternativas consideradas
+
+### Zustand ou Redux Toolkit
+
+Nao foram adotados porque o app ainda nao sofre com:
+
+- compartilhamento profundo de estado entre areas independentes
+- seletores complexos
+- efeitos assincromos com alto acoplamento
+
+Seriam validos numa fase posterior, mas aqui tenderiam a adicionar ceremony demais para um fluxo principal relativamente linear.
+
+### CSS Modules ou Tailwind
+
+Nao foram escolhidos por dois motivos:
+
+- o projeto precisava de **tema centralizado**, inclusive com light/dark mode e motion tokens
+- `styled-components` permitiu co-localizar o comportamento visual perto dos componentes sem perder composicao
+
+O trade-off e conhecido: CSS-in-JS pode custar mais em runtime do que CSS extraido. Para o tamanho deste take-home, a ergonomia pesou mais do que esse custo.
+
+### Drag-and-drop para trocas
+
+Foi deliberadamente deixado de fora do MVP porque a troca via selects:
+
+- e mais facil de testar
+- e mais previsivel para acessibilidade
+- satisfaz o requisito do desafio com menos risco de bug comportamental
+
+Se o produto evoluir, o passo correto seria um drag-and-drop acessivel, nao uma interacao mouse-only.
+
 ## Estrutura do projeto
 
 ```text
@@ -188,6 +260,27 @@ src/
   theme/          # tokens, global styles e provider de tema
   types/          # contratos de dominio
 ```
+
+## Fluxo principal da aplicacao
+
+1. O catalogo local e carregado pelo repositorio de times.
+2. O usuario busca e seleciona participantes via combobox acessivel.
+3. `DrawPage` coordena os slices `teams` e `draw`.
+4. Ao iniciar o sorteio, `drawValidator` confirma se a configuracao e viavel.
+5. `drawEngine` executa shuffle simples ou backtracking, conforme as restricoes ativas.
+6. O `DrawResult` gerado e persistido junto com a configuracao atual.
+7. A UI passa para o estado de resultado, habilitando share, save, compare, re-sort e swap manual.
+8. Se participantes ou configuracao mudarem depois disso, o resultado anterior e invalidado para evitar inconsistencias.
+
+## Invariantes importantes do sistema
+
+Estas regras ajudam a entender o desenho do codigo:
+
+- um resultado salvo sempre reflete um conjunto especifico de participantes + configuracao + seed
+- um resultado exibido nao pode sobreviver a mudancas de setup sem ser invalidado
+- regras de restricao precisam valer tanto no sorteio automatico quanto nas trocas manuais
+- a UI nunca deve depender de `Math.random` diretamente para corretude do sorteio
+- falhas de `localStorage` nao podem tornar a aplicacao inutilizavel
 
 ## Regras de dominio implementadas
 
@@ -226,6 +319,15 @@ O `drawEngine` usa dois caminhos:
 - backtracking quando existe politica de confederacao e/ou restricao por pote
 
 Essa escolha evita custo desnecessario no caso simples e, ao mesmo tempo, preserva corretude quando o dominio exige busca com restricoes.
+
+### Comportamento esperado sob falha
+
+O sistema foi desenhado para falhar de forma explicita:
+
+- configuracoes inviaveis sao rejeitadas no validator antes de entrar no engine
+- falhas de sorteio aparecem como erro de produto, nao como quebra silenciosa
+- falhas de persistencia local sao absorvidas defensivamente para manter a UI utilizavel
+- trocas invalidas preservam o estado anterior e exibem mensagem clara ao usuario
 
 ## UX e acessibilidade
 
@@ -268,6 +370,16 @@ A suite atual cobre **23 arquivos de teste** e **131 testes**.
 - toggle de dark mode persistido
 - reveal escalonado dos grupos renderizados
 
+### O que os testes procuram garantir
+
+Mais do que contar arquivos, a estrategia foi validar riscos reais do produto:
+
+- o usuario consegue sair da busca e chegar ate um sorteio valido
+- um resultado antigo nao permanece ativo quando o setup muda
+- regras de dominio nao ficam enterradas na UI
+- persistencia quebrada nao derruba a experiencia
+- recursos opcionais como share, historico, dark mode e motion nao regressam silenciosamente
+
 ## Qualidade e convenções
 
 - TypeScript strict
@@ -293,6 +405,18 @@ A suite atual cobre **23 arquivos de teste** e **131 testes**.
 - clareza de fluxo
 - testabilidade
 - documentacao alinhada ao codigo entregue
+
+## Como eu avaliaria este repositorio em uma entrevista
+
+Se eu estivesse revisando este projeto como entrevistador tecnico, os pontos que eu abriria primeiro seriam:
+
+- `src/features/draw/domain/` para entender a modelagem e a corretude do sorteio
+- `src/features/teams/components/TeamSearchCombobox.tsx` para avaliar UX e acessibilidade da busca
+- `src/features/draw/hooks/useDrawFlow.ts` para ver a orquestracao da sessao
+- `src/app/AppProviders.tsx` e `src/app/persistence/restoreAppState.ts` para entender hidratacao e resiliencia
+- `src/features/draw/__tests__/drawConfigurationFlow.test.tsx` e `src/features/draw/__tests__/drawResultsPanel.test.tsx` para conferir a confianca dos fluxos reais
+
+Essa trilha de leitura foi um criterio de organizacao do projeto: o repositorio deveria continuar legivel para uma avaliacao senior em tempo limitado.
 
 ## Limitacoes atuais
 

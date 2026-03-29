@@ -14,7 +14,7 @@ export function App() {
 
   return (
     <AppProviders>
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <SkipLink href="#main-content">Ir para o conteúdo principal</SkipLink>
         <GlobalNavBar />
         <MainHeader onSearchRequest={handleSearchRequest} />
