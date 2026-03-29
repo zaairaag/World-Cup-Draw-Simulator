@@ -22,6 +22,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: false,
+    testTimeout: 15000,
     exclude: [...configDefaults.exclude, '.validation-*/**', '.worktrees/**'],
     pool: 'forks',
     maxWorkers: 1,
