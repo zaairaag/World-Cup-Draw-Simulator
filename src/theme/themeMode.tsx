@@ -11,14 +11,6 @@ function isThemeMode(value: unknown): value is ThemeMode {
   return value === 'light' || value === 'dark';
 }
 
-function getSystemThemeMode(): ThemeMode {
-  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-    return 'light';
-  }
-
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
 function getInitialThemeMode(): ThemeMode {
   if (typeof window === 'undefined') {
     return 'light';
@@ -36,7 +28,7 @@ function getInitialThemeMode(): ThemeMode {
     return storedMode;
   }
 
-  return getSystemThemeMode();
+  return 'light';
 }
 
 interface ThemeModeProviderProps {

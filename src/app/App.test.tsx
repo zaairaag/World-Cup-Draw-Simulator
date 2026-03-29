@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useTheme } from 'styled-components';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { STORAGE_KEYS } from '../constants';
 import { appTheme } from '../theme/theme';
@@ -79,12 +79,37 @@ describe('App', () => {
     expect(appTheme.colors.accent).toBe('#07aa47');
   });
 
+  it('defaults to light mode when no persisted preference exists', () => {
+    const matchMediaSpy = vi.spyOn(window, 'matchMedia').mockImplementation(
+      () =>
+        ({
+          matches: true,
+          media: '(prefers-color-scheme: dark)',
+          onchange: null,
+          addListener: vi.fn(),
+          removeListener: vi.fn(),
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+          dispatchEvent: vi.fn()
+        }) as MediaQueryList
+    );
+
+    render(<App />);
+
+    expect(document.documentElement).toHaveAttribute('data-theme-mode', 'light');
+    expect(window.localStorage.getItem(STORAGE_KEYS.themeMode)).toBe('light');
+
+    matchMediaSpy.mockRestore();
+  });
+
   it('toggles dark mode from the header and persists the selection', async () => {
     const user = userEvent.setup();
 
     render(<App />);
 
     expect(document.documentElement).toHaveAttribute('data-theme-mode', 'light');
+    expect(screen.queryByText(/^escuro$/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/^claro$/i)).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /ativar modo escuro/i }));
 

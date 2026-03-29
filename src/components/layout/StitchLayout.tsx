@@ -79,7 +79,6 @@ export function MainHeader({ onSearchRequest }: MainHeaderProps) {
             <span aria-hidden="true" className="material-symbols-rounded">
               {mode === 'light' ? 'dark_mode' : 'light_mode'}
             </span>
-            <Label aria-hidden="true">{mode === 'light' ? 'ESCURO' : 'CLARO'}</Label>
           </ThemeToggleButton>
           <UserBadge>
             <Avatar>Z</Avatar>
@@ -333,7 +332,10 @@ const SearchButton = styled(HeaderAction)`
 `;
 
 const ThemeToggleButton = styled(HeaderAction)`
-  min-width: 128px;
+  width: 38px;
+  min-width: 38px;
+  padding: 0;
+  justify-content: center;
 
   @media (max-width: 600px) {
     min-width: 0;
