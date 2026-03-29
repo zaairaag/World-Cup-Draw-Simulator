@@ -34,16 +34,16 @@ npm run validate
 
 ### Scripts disponiveis
 
-| Script | Descricao |
-|---|---|
-| `dev` | Servidor de desenvolvimento Vite |
-| `build` | Type check + build de producao |
-| `preview` | Servir build localmente |
-| `typecheck` | Verificacao de tipos isolada |
-| `lint` / `lint:fix` | ESLint sem/com autofix |
-| `format` / `format:check` | Prettier write/check |
-| `test` / `coverage` | Vitest run / com cobertura |
-| `validate` | Pipeline completa (typecheck + lint + format + test) |
+| Script                    | Descricao                                            |
+| ------------------------- | ---------------------------------------------------- |
+| `dev`                     | Servidor de desenvolvimento Vite                     |
+| `build`                   | Type check + build de producao                       |
+| `preview`                 | Servir build localmente                              |
+| `typecheck`               | Verificacao de tipos isolada                         |
+| `lint` / `lint:fix`       | ESLint sem/com autofix                               |
+| `format` / `format:check` | Prettier write/check                                 |
+| `test` / `coverage`       | Vitest run / com cobertura                           |
+| `validate`                | Pipeline completa (typecheck + lint + format + test) |
 
 ## Escopo implementado
 
@@ -61,13 +61,13 @@ npm run validate
 
 ### Stack
 
-| Escolha | Justificativa |
-|---|---|
-| **React 18 + TypeScript** | Requisito do desafio. Strict mode com `noUncheckedIndexedAccess` para seguranca extra em acesso a arrays |
-| **Vite 6** | Build rapido, HMR instantaneo, ES modules nativos. Vendor splitting configurado |
-| **Context API + useReducer** | Suficiente para o escopo. Dois contextos independentes (teams/draw) evitam re-renders cruzados. Sem overhead de biblioteca externa |
-| **styled-components** | CSS-in-JS com theme tipado. Permite co-localizar estilos com componentes e usar design tokens via ThemeProvider |
-| **react-router-dom v6** | Rota unica (`/`), mas preparado para expansao. Requisito do desafio |
+| Escolha                      | Justificativa                                                                                                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **React 18 + TypeScript**    | Requisito do desafio. Strict mode com `noUncheckedIndexedAccess` para seguranca extra em acesso a arrays                                          |
+| **Vite 6**                   | Build rapido, HMR instantaneo, ES modules nativos. Vendor splitting configurado                                                                   |
+| **Context API + useReducer** | Suficiente para o escopo. Dois contextos independentes (teams/draw) evitam re-renders cruzados. Sem overhead de biblioteca externa                |
+| **styled-components**        | CSS-in-JS com theme tipado. Permite co-localizar estilos com componentes e usar design tokens via ThemeProvider                                   |
+| **react-router-dom v6**      | Rota unica (`/`), mas preparado para expansao. Requisito do desafio                                                                               |
 | **Vitest + Testing Library** | Vitest por integracao nativa com Vite (shared config, mesmo transform pipeline). Testing Library por queries que refletem como o usuario interage |
 
 ### Estrutura de pastas
@@ -112,9 +112,7 @@ src/
 Todas as operacoes que podem falhar retornam `Result<T>`:
 
 ```typescript
-type Result<T, E = string> =
-  | { ok: true; data: T }
-  | { ok: false; error: E }
+type Result<T, E = string> = { ok: true; data: T } | { ok: false; error: E };
 ```
 
 Usado no draw engine, validator, repositories e persistence. Evita try/catch espalhado e forca o chamador a tratar ambos os caminhos.
@@ -122,11 +120,13 @@ Usado no draw engine, validator, repositories e persistence. Evita try/catch esp
 ## Regras do sorteio
 
 ### Obrigatorias
+
 - **Sem duplicidade**: validator rejeita equipes repetidas
 - **Distribuicao uniforme**: grupos sempre com tamanho igual
 - **Validacao de contagem**: bloqueia sorteio se participantes != grupos x tamanho
 
 ### Extra: Politica de confederacao (FIFA-like)
+
 - UEFA: maximo 2 selecoes por grupo
 - Demais confederacoes: maximo 1 por grupo
 - Implementada com **algoritmo de backtracking** que garante distribuicao valida
@@ -140,6 +140,7 @@ Todas as regras vivem em `src/features/draw/domain/` como funcoes puras com RNG 
 **126 testes** em 23 arquivos cobrindo:
 
 ### Unitarios
+
 - `drawValidator.test.ts` — validacoes de contagem, duplicatas, confederacao
 - `drawEngine.test.ts` — shuffle, erros de validacao, politica FIFA-like
 - `confederationPolicy.test.ts` — limites, permissoes, validacao de grupo
@@ -149,6 +150,7 @@ Todas as regras vivem em `src/features/draw/domain/` como funcoes puras com RNG 
 - `drawPresets.test.ts` — aplicacao e deteccao de presets
 
 ### Integracao
+
 - `drawConfigurationFlow.test.tsx` — fluxo completo: selecionar times, configurar, sortear
 - `drawResultsPanel.test.tsx` — resultado, compartilhar, salvar, swap, undo
 - `drawPersistenceFlow.test.tsx` — restaurar sessao, historico, comparacao
@@ -183,16 +185,15 @@ Todas as regras vivem em `src/features/draw/domain/` como funcoes puras com RNG 
 ## Limitacoes e melhorias futuras
 
 ### Limitacoes atuais
-- Dados locais (JSON fixture) — sem backend
-- Sem seed de aleatoriedade (cada sorteio e unico)
-- Sem drag-and-drop para trocas (usa selects)
+
+- Dados locais (JSON fixture) sem backend
+- Trocas manuais por selects, sem drag-and-drop
 - Sem SSR (SPA client-side only)
 
-### Melhorias possiveis
-- Seed deterministica para reproduzir sorteios
-- Backend API substituindo localStorage (a interface ja existe)
-- Sistema de potes (pot 1-4) com distribuicao por ranking
-- Mata-mata (Opcao B do desafio)
-- Animacoes de transicao no sorteio
-- Dark mode (theme ja suporta)
+### Melhorias futuras
+
+- Backend API substituindo localStorage (a interface `IStorageRepository` ja existe)
+- Mata-mata (Opcao B do desafio) como segunda fase
+- Animacoes de transicao durante o sorteio
+- Dark mode (o theme ja esta preparado para suportar)
 - PWA com Service Worker para uso offline
