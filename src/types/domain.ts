@@ -3,11 +3,14 @@ export type Confederation = 'UEFA' | 'CONMEBOL' | 'CONCACAF' | 'CAF' | 'AFC' | '
 export type QualificationType = 'host' | 'qualified';
 export type ConfederationPolicy = 'none' | 'fifa-like';
 
+export type Pot = 1 | 2 | 3 | 4;
+
 export interface Team {
   id: string;
   name: string;
   code: string;
   confederation: Confederation;
+  pot?: Pot;
   qualificationType?: QualificationType;
 }
 
@@ -38,6 +41,7 @@ export interface Group {
 export interface DrawResult {
   groups: Group[];
   settings: DrawSettings;
+  seed: number;
   timestamp: number;
 }
 

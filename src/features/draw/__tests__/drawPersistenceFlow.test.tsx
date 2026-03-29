@@ -52,6 +52,7 @@ function createPersistedDrawState(
       settings: {
         ...settings
       },
+      seed: 12345,
       timestamp: 1
     },
     status: 'drawn',

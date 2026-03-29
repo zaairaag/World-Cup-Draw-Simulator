@@ -117,6 +117,7 @@ function createMockResult(
       teamsPerGroup: 2,
       confederationPolicy: 'none'
     },
+    seed: 12345,
     timestamp
   };
 }
@@ -611,7 +612,10 @@ describe('draw results panel', () => {
   }, 20000);
 
   it('shows an alert when the swap keeps both teams in the same group', async () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0);
+    vi.spyOn(drawEngineModule, 'drawEngine').mockReturnValue({
+      ok: true,
+      data: createMockResult(Date.now(), ['CAN', 'ECU'], ['SEN', 'NED'])
+    });
     const user = userEvent.setup();
 
     await drawKnownResult(user);
@@ -619,7 +623,7 @@ describe('draw results panel', () => {
     await user.selectOptions(screen.getByLabelText(/grupo de origem/i), 'group-a');
     await user.selectOptions(screen.getByLabelText(/equipe de origem/i), 'ECU');
     await user.selectOptions(screen.getByLabelText(/grupo de destino/i), 'group-a');
-    await user.selectOptions(screen.getByLabelText(/equipe de destino/i), 'SEN');
+    await user.selectOptions(screen.getByLabelText(/equipe de destino/i), 'CAN');
     await user.click(screen.getByRole('button', { name: /trocar equipes/i }));
 
     expect(screen.getByRole('alert')).toHaveTextContent(
@@ -630,7 +634,22 @@ describe('draw results panel', () => {
   }, 20000);
 
   it('shows an alert and preserves teams when a swap violates the active confederation policy', async () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0);
+    vi.spyOn(drawEngineModule, 'drawEngine').mockReturnValue({
+      ok: true,
+      data: {
+        groups: [
+          { id: 'group-a', teams: [getTeam('JPN'), getTeam('NED')] },
+          { id: 'group-b', teams: [getTeam('ECU'), getTeam('IRN')] }
+        ],
+        settings: {
+          numberOfGroups: 2,
+          teamsPerGroup: 2,
+          confederationPolicy: 'fifa-like'
+        },
+        seed: 1,
+        timestamp: Date.now()
+      }
+    });
     const user = userEvent.setup();
 
     await drawKnownFifaLikeResult(user);
@@ -649,15 +668,18 @@ describe('draw results panel', () => {
   }, 20000);
 
   it('restores the previous group composition after undoing the last swap', async () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0);
+    vi.spyOn(drawEngineModule, 'drawEngine').mockReturnValue({
+      ok: true,
+      data: createMockResult(Date.now(), ['CAN', 'ECU'], ['SEN', 'NED'])
+    });
     const user = userEvent.setup();
 
     await drawKnownResult(user);
 
     await user.selectOptions(screen.getByLabelText(/grupo de origem/i), 'group-b');
-    await user.selectOptions(screen.getByLabelText(/equipe de origem/i), 'CAN');
+    await user.selectOptions(screen.getByLabelText(/equipe de origem/i), 'SEN');
     await user.selectOptions(screen.getByLabelText(/grupo de destino/i), 'group-a');
-    await user.selectOptions(screen.getByLabelText(/equipe de destino/i), 'SEN');
+    await user.selectOptions(screen.getByLabelText(/equipe de destino/i), 'ECU');
     await user.click(screen.getByRole('button', { name: /trocar equipes/i }));
 
     expect(screen.getByRole('button', { name: /desfazer última troca/i })).toBeInTheDocument();

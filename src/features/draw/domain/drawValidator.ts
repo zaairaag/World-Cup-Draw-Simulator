@@ -9,6 +9,32 @@ interface ValidDrawPayload {
   settings: DrawSettings;
 }
 
+function validatePotDistribution(
+  participants: Team[],
+  settings: DrawSettings
+): Result<ValidDrawPayload> | null {
+  const countsByPot = new Map<number, number>();
+
+  for (const team of participants) {
+    if (team.pot === undefined) {
+      continue;
+    }
+
+    countsByPot.set(team.pot, (countsByPot.get(team.pot) ?? 0) + 1);
+  }
+
+  for (const [pot, count] of countsByPot) {
+    if (count > settings.numberOfGroups) {
+      return {
+        ok: false,
+        error: `Não é possível distribuir ${count} equipes do pote ${pot} em ${settings.numberOfGroups} grupos com limite de 1 por grupo.`
+      };
+    }
+  }
+
+  return null;
+}
+
 export function drawValidator(
   participants: Team[],
   settings: DrawSettings
@@ -43,6 +69,12 @@ export function drawValidator(
       ok: false,
       error: 'Equipes duplicadas não são permitidas no sorteio.'
     };
+  }
+
+  const potValidationResult = validatePotDistribution(participants, settings);
+
+  if (potValidationResult) {
+    return potValidationResult;
   }
 
   const confederationResult = validateConfederationDistribution(participants, settings);

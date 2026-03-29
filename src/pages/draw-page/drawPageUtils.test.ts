@@ -23,6 +23,7 @@ function createResult(): DrawResult {
   return {
     groups: [],
     settings: defaultSettings,
+    seed: 12345,
     timestamp: 1
   };
 }

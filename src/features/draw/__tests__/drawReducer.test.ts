@@ -35,6 +35,7 @@ function createResult(overrides?: Partial<DrawResult>): DrawResult {
       teamsPerGroup: 2,
       confederationPolicy: 'none'
     },
+    seed: 12345,
     timestamp: 1,
     ...overrides
   };
@@ -195,6 +196,7 @@ describe('drawReducer', () => {
           teamsPerGroup: 2,
           confederationPolicy: 'fifa-like'
         },
+        seed: 12345,
         timestamp: 1
       }
     });
@@ -230,6 +232,7 @@ describe('drawReducer', () => {
         teamsPerGroup: 2,
         confederationPolicy: 'none'
       },
+      seed: 12345,
       timestamp: 1
     };
 

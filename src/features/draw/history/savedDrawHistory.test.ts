@@ -13,6 +13,7 @@ describe('saved draw history', () => {
           { id: 'group-b', teams: [] }
         ],
         settings: { numberOfGroups: 2, teamsPerGroup: 2, confederationPolicy: 'none' },
+        seed: 12345,
         timestamp: 1700000000000
       },
       status: 'drawn',

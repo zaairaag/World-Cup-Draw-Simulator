@@ -26,6 +26,7 @@ export const DrawGroupCard = memo(function DrawGroupCard({ group, index }: DrawG
             <TeamInfo>
               <TeamFlag code={team.code} teamName={team.name} size="md" />
               <TeamNameText>{team.name}</TeamNameText>
+              {team.pot ? <PotBadge>P{team.pot}</PotBadge> : null}
             </TeamInfo>
             <ConfedPill data-confed={team.confederation}>{team.confederation}</ConfedPill>
           </TeamRow>
@@ -122,6 +123,16 @@ const TeamInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
+`;
+
+const PotBadge = styled.span`
+  font-size: 10px;
+  font-weight: 900;
+  color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.surfaceAlt};
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
 `;
 
 const TeamNameText = styled.span`

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { localTeamRepository } from '../../teams/repositories/localTeamRepository';
 import { drawValidator } from '../domain/drawValidator';
-import type { Confederation, Team } from '../../../types';
+import type { Confederation, Pot, Team } from '../../../types';
 
 function getTeams(count: number) {
   const result = localTeamRepository.loadCatalog();
@@ -30,12 +30,13 @@ function getTeam(index: number) {
   return team;
 }
 
-function createTeam(code: string, name: string, confederation: Confederation): Team {
+function createTeam(code: string, name: string, confederation: Confederation, pot?: Pot): Team {
   return {
     id: code,
     code,
     name,
-    confederation
+    confederation,
+    pot
   };
 }
 
@@ -141,6 +142,26 @@ describe('drawValidator', () => {
     });
 
     expect(result.ok).toBe(true);
+  });
+
+  it('rejects an impossible pot distribution when a pot exceeds the group count', () => {
+    const teams = [
+      createTeam('ARG', 'Argentina', 'CONMEBOL', 1),
+      createTeam('BRA', 'Brazil', 'CONMEBOL', 1),
+      createTeam('FRA', 'France', 'UEFA', 1),
+      createTeam('JPN', 'Japan', 'AFC', 2)
+    ];
+
+    const result = drawValidator(teams, {
+      numberOfGroups: 2,
+      teamsPerGroup: 2,
+      confederationPolicy: 'none'
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      error: 'Não é possível distribuir 3 equipes do pote 1 em 2 grupos com limite de 1 por grupo.'
+    });
   });
 
   it('accepts a fifa-like distribution that depends on the UEFA double limit', () => {

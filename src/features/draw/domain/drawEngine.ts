@@ -1,8 +1,8 @@
-import type { DrawResult, DrawSettings, Team, Result } from '../../../types';
+import type { DrawResult, DrawSettings, Group, Team, Result } from '../../../types';
 
 import { isTeamAllowedInGroup } from './confederationPolicy';
 import { drawValidator } from './drawValidator';
-import { shuffleList, type RandomNumberGenerator } from './random';
+import { createSeededRng, generateSeed, shuffleList, type RandomNumberGenerator } from './random';
 import { toGroupId } from '../utils/groupLabel';
 
 function createEmptyGroups(settings: DrawSettings): DrawResult['groups'] {
@@ -10,6 +10,14 @@ function createEmptyGroups(settings: DrawSettings): DrawResult['groups'] {
     id: toGroupId(index),
     teams: []
   }));
+}
+
+function isPotAllowedInGroup(team: Team, group: Group): boolean {
+  if (team.pot === undefined) {
+    return true;
+  }
+
+  return !group.teams.some((member) => member.pot === team.pot);
 }
 
 function assignTeamsWithBacktracking(
@@ -33,7 +41,8 @@ function assignTeamsWithBacktracking(
     groups.filter(
       (group) =>
         group.teams.length < settings.teamsPerGroup &&
-        isTeamAllowedInGroup(team, group, settings.confederationPolicy)
+        isTeamAllowedInGroup(team, group, settings.confederationPolicy) &&
+        isPotAllowedInGroup(team, group)
     ),
     randomNumberGenerator
   );
@@ -56,6 +65,7 @@ function assignTeamsWithBacktracking(
 function drawRestrictedGroups(
   participants: Team[],
   settings: DrawSettings,
+  seed: number,
   randomNumberGenerator: RandomNumberGenerator
 ): Result<DrawResult> {
   const groups = createEmptyGroups(settings);
@@ -82,15 +92,21 @@ function drawRestrictedGroups(
     data: {
       groups,
       settings,
+      seed,
       timestamp: Date.now()
     }
   };
 }
 
+export interface DrawEngineOptions {
+  seed?: number;
+  randomNumberGenerator?: RandomNumberGenerator;
+}
+
 export function drawEngine(
   participants: Team[],
   settings: DrawSettings,
-  randomNumberGenerator: RandomNumberGenerator = Math.random
+  options: DrawEngineOptions = {}
 ): Result<DrawResult> {
   const validationResult = drawValidator(participants, settings);
 
@@ -98,11 +114,13 @@ export function drawEngine(
     return validationResult;
   }
 
-  if (settings.confederationPolicy === 'none') {
-    const shuffledParticipants = shuffleList(
-      validationResult.data.participants,
-      randomNumberGenerator
-    );
+  const seed = options.seed ?? generateSeed();
+  const rng = options.randomNumberGenerator ?? createSeededRng(seed);
+  const hasPots = validationResult.data.participants.some((team) => team.pot !== undefined);
+  const needsBacktracking = settings.confederationPolicy !== 'none' || hasPots;
+
+  if (!needsBacktracking) {
+    const shuffledParticipants = shuffleList(validationResult.data.participants, rng);
 
     return {
       ok: true,
@@ -115,6 +133,7 @@ export function drawEngine(
           )
         })),
         settings: validationResult.data.settings,
+        seed,
         timestamp: Date.now()
       }
     };
@@ -123,6 +142,7 @@ export function drawEngine(
   return drawRestrictedGroups(
     validationResult.data.participants,
     validationResult.data.settings,
-    randomNumberGenerator
+    seed,
+    rng
   );
 }

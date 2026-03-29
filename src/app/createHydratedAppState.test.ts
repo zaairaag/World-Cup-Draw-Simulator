@@ -42,6 +42,7 @@ function createPersistedDrawState(): DrawState {
         teamsPerGroup: 2,
         confederationPolicy: 'none'
       },
+      seed: 12345,
       timestamp: 123,
       groups: [
         {
@@ -70,6 +71,30 @@ describe('createHydratedAppState', () => {
     expect(hydratedState.drawState.status).toBe('drawn');
     expect(hydratedState.drawState.lastError).toBeNull();
     expect(hydratedState.drawState.result?.groups).toHaveLength(2);
+  });
+
+  it('hydrates legacy restored draws even when the persisted result has no seed', () => {
+    const catalog = loadCatalog();
+    const persistedState = createPersistedDrawState();
+    const legacyDrawState = {
+      ...persistedState,
+      result: persistedState.result
+        ? {
+            groups: persistedState.result.groups,
+            settings: persistedState.result.settings,
+            timestamp: persistedState.result.timestamp
+          }
+        : null
+    };
+
+    const hydratedState = createHydratedAppState(
+      catalog,
+      ['CAN', 'ECU', 'SEN', 'NED'],
+      legacyDrawState
+    );
+
+    expect(hydratedState.drawState.status).toBe('drawn');
+    expect(hydratedState.drawState.result?.seed).toBe(123);
   });
 
   it('drops a stale restored result and keeps the saved settings', () => {

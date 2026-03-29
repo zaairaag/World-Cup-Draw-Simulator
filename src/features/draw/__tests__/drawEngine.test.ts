@@ -47,7 +47,7 @@ describe('drawEngine', () => {
         teamsPerGroup: 2,
         confederationPolicy: 'none'
       },
-      () => 0
+      { randomNumberGenerator: () => 0 }
     );
 
     expect(result.ok).toBe(true);
@@ -101,7 +101,7 @@ describe('drawEngine', () => {
         teamsPerGroup: 2,
         confederationPolicy: 'fifa-like'
       },
-      () => 0.9
+      { randomNumberGenerator: () => 0.9 }
     );
 
     expect(result.ok).toBe(true);

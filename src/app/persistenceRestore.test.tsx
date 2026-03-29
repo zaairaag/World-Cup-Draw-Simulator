@@ -22,6 +22,7 @@ function createPersistedDrawState(): DrawState {
         teamsPerGroup: 2,
         confederationPolicy: 'none'
       },
+      seed: 12345,
       timestamp: 123,
       groups: [
         {

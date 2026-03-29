@@ -6,6 +6,7 @@ import { summarizeDrawResult } from './summarizeDrawResult';
 describe('summarizeDrawResult', () => {
   it('derives factual metrics from a draw result', () => {
     const result: DrawResult = {
+      seed: 12345,
       timestamp: 1700000000000,
       settings: {
         numberOfGroups: 2,

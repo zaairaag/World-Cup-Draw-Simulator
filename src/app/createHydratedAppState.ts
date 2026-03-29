@@ -113,10 +113,17 @@ function sanitizeResult(
     return null;
   }
 
+  const timestamp = typeof rawResult.timestamp === 'number' ? rawResult.timestamp : Date.now();
+  const seed =
+    typeof rawResult.seed === 'number' && Number.isInteger(rawResult.seed) && rawResult.seed > 0
+      ? rawResult.seed
+      : Math.max(1, Math.trunc(timestamp));
+
   return {
     groups: groups as DrawResult['groups'],
     settings,
-    timestamp: typeof rawResult.timestamp === 'number' ? rawResult.timestamp : Date.now()
+    seed,
+    timestamp
   };
 }
 

@@ -87,7 +87,7 @@ export const DrawResultsPanel = memo(function DrawResultsPanel({
           Confira o resultado da simulação com {result.groups.length} grupos gerados e{' '}
           {result.settings.teamsPerGroup} equipes por grupo.
           {` `}
-          Gerado em {formatTimestamp(result.timestamp)}.
+          Gerado em {formatTimestamp(result.timestamp)}. Seed: {result.seed}.
         </Description>
       </ResultHeader>
 

@@ -20,6 +20,7 @@ function buildSavedDraw(id: string, groups: string[][]): SavedDrawHistoryEntry {
       lastError: null,
       undoResult: null,
       result: {
+        seed: 12345,
         timestamp: 1700000000000,
         settings: {
           numberOfGroups: groups.length,
