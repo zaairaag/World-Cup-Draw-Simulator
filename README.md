@@ -12,16 +12,35 @@ O projeto foi estruturado para atender o desafio tecnico com um minimo solido e 
 
 O escopo implementado para o desafio foi a **Opcao A — fase de grupos**. Mata-mata ficou deliberadamente fora do MVP.
 
+---
+
 ## Stack
 
 | Escolha                      | Motivo                                                                                   |
 | ---------------------------- | ---------------------------------------------------------------------------------------- |
 | **React 18 + TypeScript**    | Base pedida no desafio, com tipagem forte e modelagem explicita do dominio               |
-| **Vite**                     | Setup simples, build rapido, boa ergonomia para take-home e integracao nativa com Vitest |
+| **Vite 6**                   | Setup simples, build rapido, boa ergonomia para take-home e integracao nativa com Vitest |
 | **Context API + useReducer** | Suficiente para o escopo atual, sem custo extra de biblioteca de estado                  |
-| **styled-components**        | Tema tipado, co-localizacao de estilos e composicao simples de tokens visuais            |
-| **react-router-dom**         | Mantem a estrutura preparada para crescer, mesmo com rota unica no MVP                   |
+| **styled-components 6**      | Tema tipado, co-localizacao de estilos e composicao simples de tokens visuais            |
+| **react-router-dom 6**       | Mantem a estrutura preparada para crescer, mesmo com rota unica no MVP                   |
 | **Vitest + Testing Library** | Mesma pipeline do Vite e testes orientados ao comportamento real do usuario              |
+
+### Dependencias de producao
+
+Apenas 4 bibliotecas em runtime:
+
+```
+react 18.3 · react-dom 18.3 · react-router-dom 6.30 · styled-components 6.1
+```
+
+### Dependencias de desenvolvimento
+
+| Categoria     | Pacotes                                                                        |
+| ------------- | ------------------------------------------------------------------------------ |
+| Testes        | vitest 3, @vitest/coverage-v8, @testing-library/react 16, jest-dom, user-event |
+| Lint e format | eslint 9, prettier 3, eslint-config-prettier, typescript-eslint 8              |
+| Git hooks     | husky 9, lint-staged 16, @commitlint/cli 20, @commitlint/config-conventional   |
+| Build e tipos | typescript 5.8, vite 6, @vitejs/plugin-react 4, jsdom 26                       |
 
 ## Criterios de projeto
 
@@ -32,6 +51,8 @@ As decisoes tecnicas foram guiadas por quatro criterios principais:
 - **Baixo acoplamento**: UI, dominio e persistencia precisam evoluir sem reescrita em cascata
 - **Escalabilidade pragmatica**: preparar o terreno para crescer sem superengenharia no MVP
 
+---
+
 ## Como rodar
 
 ```bash
@@ -41,28 +62,49 @@ npm run dev
 
 Aplicacao local: `http://localhost:5173`
 
+### Pre-requisitos
+
+- Node.js >= 18
+- npm (instalado com o Node)
+
 ## Como validar
 
 ```bash
-npm run build
-npx vitest run
-npm run coverage
-npm run validate
+npm run build        # typecheck + build de producao
+npm run test         # suite completa com Vitest
+npm run coverage     # suite completa com cobertura
+npm run validate     # typecheck + lint + format check + testes (gate unico)
 ```
 
 ### Scripts disponiveis
 
-| Script                    | Descricao                                |
-| ------------------------- | ---------------------------------------- |
-| `dev`                     | Servidor de desenvolvimento Vite         |
-| `build`                   | Typecheck + build de producao            |
-| `preview`                 | Serve o build localmente                 |
-| `typecheck`               | Verificacao de tipos isolada             |
-| `lint` / `lint:fix`       | ESLint sem/com autofix                   |
-| `format` / `format:check` | Prettier write/check                     |
-| `test`                    | Suite completa com Vitest                |
-| `coverage`                | Suite completa com cobertura             |
-| `validate`                | Typecheck + lint + format check + testes |
+| Script                    | Comando real                                    | Descricao                         |
+| ------------------------- | ----------------------------------------------- | --------------------------------- |
+| `dev`                     | `vite`                                          | Servidor de desenvolvimento Vite  |
+| `build`                   | `tsc -b && vite build`                          | Typecheck + build de producao     |
+| `preview`                 | `vite preview`                                  | Serve o build localmente          |
+| `typecheck`               | `tsc -b`                                        | Verificacao de tipos isolada      |
+| `lint` / `lint:fix`       | `eslint .` / `eslint . --fix`                   | ESLint sem/com autofix            |
+| `format` / `format:check` | `prettier --write ...` / `prettier --check ...` | Prettier write/check              |
+| `test`                    | `vitest run`                                    | Suite completa com Vitest         |
+| `coverage`                | `vitest run --coverage`                         | Suite completa com cobertura (v8) |
+| `validate`                | `typecheck && lint && format:check && test`     | Gate de qualidade completo        |
+| `prepare`                 | `husky`                                         | Instala os hooks do Husky         |
+
+### Build de producao
+
+O build gera 3 chunks otimizados com vendor splitting:
+
+| Arquivo      | Tamanho | Gzip    | Conteudo                                    |
+| ------------ | ------- | ------- | ------------------------------------------- |
+| `vendor.js`  | 157 kB  | 51.6 kB | React, React DOM, React Router              |
+| `index.js`   | 122 kB  | 28.0 kB | Codigo da aplicacao, dominio, componentes   |
+| `styles.js`  | 31 kB   | 11.9 kB | styled-components runtime                   |
+| `index.html` | 4.4 kB  | 1.3 kB  | HTML com meta tags, JSON-LD e font preloads |
+
+Total gzip: **~93 kB**
+
+---
 
 ## O que foi entregue
 
@@ -93,21 +135,22 @@ Todos os extras opcionais do enunciado foram cobertos:
 
 ### Melhorias adicionais alem dos extras
 
-- **Dark mode com toggle visivel no header**
-- Persistencia da preferencia de tema em `localStorage`
+- **Dark mode com toggle visivel no header** e persistencia da preferencia em `localStorage`
 - Comparacao lado a lado entre sorteios salvos
 - Undo da ultima troca manual
-- Presets de configuracao
+- Presets de configuracao (padrao do desafio, compacto, FIFA-like)
 - Download do resultado em JSON
 - Quick filters por confederacao no catalogo
 - Log de atividade da sessao
+
+---
 
 ## Matriz de aderencia ao desafio
 
 | Item do desafio                  | Status       | Como foi atendido                                                     |
 | -------------------------------- | ------------ | --------------------------------------------------------------------- |
 | React + TypeScript               | **Atendido** | Aplicacao em React 18 com TypeScript strict                           |
-| Build tool                       | **Atendido** | Vite + Vitest                                                         |
+| Build tool                       | **Atendido** | Vite 6 + Vitest 3                                                     |
 | Gerenciamento de estado          | **Atendido** | Context API + `useReducer`, com justificativa arquitetural abaixo     |
 | Estilizacao                      | **Atendido** | `styled-components`, com tema tipado e tokens compartilhados          |
 | Roteamento                       | **Atendido** | `react-router-dom`, mantendo a base preparada para crescimento        |
@@ -120,9 +163,355 @@ Todos os extras opcionais do enunciado foram cobertos:
 | Tipagem de dominio               | **Atendido** | Tipos explicitamente modelados e reutilizados                         |
 | Testes unitarios                 | **Atendido** | Dominio, reducers, utilitarios e persistencia                         |
 | Testes de integracao             | **Atendido** | Busca + sorteio, restore, swap, historico, compartilhamento e tema    |
+| ESLint + Prettier                | **Atendido** | ESLint 9 flat config + Prettier + Husky + lint-staged + commitlint    |
+| README completo                  | **Atendido** | Como rodar, testar, decisoes, regras, limitacoes, melhorias futuras   |
+| AI_USAGE.md                      | **Atendido** | Ferramentas, etapas, prompts, adaptacoes manuais e validacao          |
 | Extras opcionais                 | **Atendido** | Potes, confederacoes, seed, share, historico, motion e a11y expandida |
 
 Essa tabela existe para deixar claro que o projeto nao apenas "parece completo", mas foi deliberadamente cruzado contra o enunciado.
+
+---
+
+## Estrutura do projeto
+
+```text
+src/
+  app/                          # bootstrap, providers, restore, routing
+    persistence/                #   hidratacao do estado a partir do localStorage
+    App.tsx                     #   componente raiz com BrowserRouter e layout
+    AppProviders.tsx             #   composicao de providers (tema + teams + draw)
+    routes.tsx                  #   configuracao de rotas
+
+  components/                   # layout e componentes compartilhados
+    layout/
+      StitchLayout.tsx          #   GlobalNavBar, MainHeader, MainFooter
+      stickyHeights.ts          #   constantes de medida para layout sticky
+
+  constants/                    # dataset, chaves de storage, constantes gerais
+    teams.json                  #   catalogo de 32 selecoes com pot e confederacao
+    drawDefaults.ts             #   valores padrao (8 grupos, 4 por grupo)
+    storageKeys.ts              #   chaves de localStorage
+
+  features/
+    draw/
+      __tests__/                #   testes de integracao do fluxo de sorteio
+      components/               #   configuracao, resultado, resumo, swap, ready state
+        DrawConfigurationPanel  #     painel de opcoes com presets
+        DrawResultsPanel        #     painel de resultado com grupos
+        DrawGroupCard           #     card de grupo individual
+        DrawSwapControls        #     interface de troca manual
+        DrawExecutiveSummary    #     resumo estatistico do sorteio
+        ReadyScene              #     estado inicial antes do sorteio
+        SaveDrawModal           #     modal para salvar com label
+        SavedDrawComparisonPanel #    comparacao lado a lado
+        teamVisuals             #     helpers de renderizacao de equipes
+      configuration/            #   presets de sorteio
+        drawPresets.ts          #     padrao (8x4), compacto (4x4), FIFA-like
+      context/                  #   reducer + provider do sorteio
+        drawReducer.ts          #     10 actions: SET_RESULT, SWAP_TEAMS, UNDO, etc
+        DrawContext.tsx          #     provider com auto-persistencia
+      domain/                   #   engine, validator, RNG, politicas (zero React)
+        drawEngine.ts           #     shuffle simples ou backtracking
+        drawValidator.ts        #     7 validacoes de entrada
+        confederationPolicy.ts  #     regra UEFA max 2, demais max 1
+        confederationValidation.ts #  validacao de viabilidade antes do sorteio
+        random.ts               #     seeded RNG (mulberry32) + Fisher-Yates shuffle
+      history/                  #   salvar, restaurar e comparar sorteios
+        savedDrawHistory.ts     #     CRUD de historico no localStorage
+        compareSavedDraws.ts    #     diff grupo a grupo entre dois sorteios
+      hooks/                    #   orquestracao do fluxo da pagina
+        useDrawFlow.ts          #     ciclo completo: validar → sortear → swap → undo
+      utils/                    #   share, sumarios, helpers de dominio
+        shareDrawResult.ts      #     Web Share API + clipboard fallback
+        summarizeDrawResult.ts  #     metricas de confederacao e diversidade
+        groupLabel.ts           #     Grupo A, B, C... (suporta >26 grupos)
+
+    teams/
+      __tests__/                #   testes de busca, filtro e repositorio
+      components/               #   combobox, catalogo e painel de selecionados
+        TeamSearchCombobox.tsx  #     combobox acessivel com ARIA e keyboard nav
+        AvailableTeamsCatalog   #     catalogo com quick filters por confederacao
+        SelectedTeamsPanel      #     painel de equipes selecionadas
+      context/                  #   reducer + provider de participantes
+        teamsReducer.ts         #     6 actions: SELECT, DESELECT, FILL, CLEAR, etc
+        TeamsContext.tsx         #     provider com auto-persistencia
+      hooks/                    #   busca, debounce e selecao
+        useTeamSearch.ts        #     query com debounce (200ms), suggestions, keyboard
+        useTeamSelection.ts     #     selecao, remocao e autofill
+      repositories/             #   catalogo local e contrato de dados
+        ITeamRepository.ts      #     interface substituivel
+        localTeamRepository.ts  #     implementacao sobre teams.json
+      utils/                    #   filtro, normalizacao e busca
+        filterTeams.ts          #     filtro por nome, codigo, confederacao
+
+  hooks/                        # hooks compartilhados do app
+  pages/                        # pagina principal e subareas da tela
+    draw-page/
+      DrawPage.tsx              #   coordenacao dos slices teams + draw
+      drawPageSections.tsx      #   componentes de secao da pagina
+      drawPageUtils.ts          #   helpers de UX e download
+
+  repositories/                 # persistencia local generica
+    IStorageRepository.ts       #   interface com save/load/clear
+    localStorageRepository.ts   #   implementacao com tratamento de falha
+
+  test/                         # infraestrutura de teste
+    setup.ts                    #   jest-dom, cleanup, mock restore
+
+  theme/                        # tokens, global styles e provider de tema
+    theme.ts                    #   light + dark com 29 cores semanticas
+    themeMode.tsx               #   toggle com persistencia e system preference
+    themeModeContext.ts          #   contexto de tema
+    globalStyles.ts             #   reset e estilos base
+    styled.d.ts                 #   augmentacao de tipos para styled-components
+
+  types/                        # contratos de dominio
+    domain.ts                   #   Team, Group, DrawResult, DrawSettings, etc
+    result.ts                   #   Result<T, E> para operacoes com falha
+    index.ts                    #   barrel export
+```
+
+---
+
+## Dataset de selecoes
+
+O catalogo inclui 32 selecoes distribuidas em 5 confederacoes e 4 potes:
+
+| Pot | CONMEBOL          | UEFA                                           | CONCACAF                | AFC                               | CAF               |
+| --- | ----------------- | ---------------------------------------------- | ----------------------- | --------------------------------- | ----------------- |
+| 1   | Argentina, Brazil | France, England, Spain                         | Canada*, Mexico*, USA\* |                                   |                   |
+| 2   | Uruguay, Colombia | Germany, Portugal, Italy, Netherlands, Belgium |                         |                                   | Morocco           |
+| 3   | Ecuador           | Croatia, Denmark, Switzerland, Poland          |                         | Japan, South Korea, Iran, Senegal |                   |
+| 4   | Chile             | Serbia                                         | Costa Rica              | Australia, Saudi Arabia           | Nigeria, Cameroon |
+
+\* Selecoes sede (`qualificationType: "host"`)
+
+---
+
+## Modelagem de tipos
+
+### Tipos de dominio (`src/types/domain.ts`)
+
+```typescript
+type Confederation = 'UEFA' | 'CONMEBOL' | 'CONCACAF' | 'CAF' | 'AFC' | 'OFC';
+type QualificationType = 'host' | 'qualified';
+type ConfederationPolicy = 'none' | 'fifa-like';
+type Pot = 1 | 2 | 3 | 4;
+
+interface Team {
+  id: string;
+  name: string;
+  code: string;
+  confederation: Confederation;
+  pot?: Pot;
+  qualificationType?: QualificationType;
+}
+
+interface DrawSettings {
+  numberOfGroups: number;
+  teamsPerGroup: number;
+  confederationPolicy: ConfederationPolicy;
+}
+
+interface Group {
+  id: string; // "group-a", "group-b", ...
+  teams: Team[];
+}
+
+interface DrawResult {
+  groups: Group[];
+  settings: DrawSettings;
+  seed: number; // seed usada para reproduzir o sorteio
+  timestamp: number; // momento da geracao
+}
+
+type DrawStatus = 'idle' | 'configured' | 'loading' | 'drawn';
+type SimulatorPageState = 'empty' | 'selecting' | 'ready' | 'drawing' | 'result' | 'swap_error';
+```
+
+### Tipo utilitario (`src/types/result.ts`)
+
+```typescript
+type Result<T, E = string> = { ok: true; data: T } | { ok: false; error: E };
+```
+
+Usado em todo o dominio e persistencia para representar operacoes que podem falhar sem lancar excecao.
+
+### Estado da aplicacao
+
+```typescript
+// Slice de equipes
+interface TeamState {
+  catalog: Team[];
+  selectedIds: string[];
+}
+
+// Slice do sorteio
+interface DrawState {
+  settings: DrawSettings;
+  result: DrawResult | null;
+  status: DrawStatus;
+  lastError: string | null;
+  undoResult: DrawResult | null;
+}
+
+// Payload de troca manual
+interface SwapPayload {
+  sourceGroupId: string;
+  sourceTeamId: string;
+  targetGroupId: string;
+  targetTeamId: string;
+}
+```
+
+### Actions do reducer
+
+```typescript
+// Teams: LOAD_CATALOG, SELECT_TEAM, DESELECT_TEAM, FILL_SELECTION, CLEAR_SELECTION, RESTORE_SELECTION
+// Draw:  UPDATE_SETTINGS, SET_RESULT, SET_LOADING, SET_ERROR, SWAP_TEAMS, UNDO_LAST_SWAP, CLEAR_ERROR, RESET, RESTORE_STATE
+```
+
+---
+
+## Fluxo principal da aplicacao
+
+```text
+                    ┌────────────────────────────────────────────────────────┐
+                    │                     AppProviders                       │
+                    │  restaura estado do localStorage na montagem          │
+                    └────────────────────┬───────────────────────────────────┘
+                                         │
+              ┌──────────────────────────┼──────────────────────────┐
+              ▼                          ▼                          ▼
+       ThemeModeProvider          TeamsProvider               DrawProvider
+       (light/dark + persist)    (catalogo + selecao)       (settings + result)
+              │                          │                          │
+              └──────────────────────────┼──────────────────────────┘
+                                         │
+                                         ▼
+                                     DrawPage
+                              (coordena os dois slices)
+                                         │
+                 ┌───────────┬───────────┼───────────┬───────────┐
+                 ▼           ▼           ▼           ▼           ▼
+            Simulador   Participantes  Opcoes    Historico   Comparacao
+              (tab)        (tab)       (tab)      (tab)       (tab)
+```
+
+### Jornada do usuario
+
+1. O catalogo local e carregado pelo repositorio de times
+2. O usuario busca e seleciona participantes via combobox acessivel
+3. O usuario configura o sorteio (grupos, tamanho, politica de confederacao)
+4. `drawValidator` confirma se a configuracao e viavel
+5. `drawEngine` executa shuffle simples ou backtracking, conforme as restricoes ativas
+6. O `DrawResult` gerado e persistido junto com a configuracao atual
+7. A UI passa para o estado de resultado, habilitando share, save, compare, re-sort e swap manual
+8. Se participantes ou configuracao mudarem depois disso, o resultado anterior e invalidado
+
+---
+
+## Invariantes importantes do sistema
+
+Estas regras ajudam a entender o desenho do codigo:
+
+- um resultado salvo sempre reflete um conjunto especifico de participantes + configuracao + seed
+- um resultado exibido nao pode sobreviver a mudancas de setup sem ser invalidado
+- regras de restricao precisam valer tanto no sorteio automatico quanto nas trocas manuais
+- a UI nunca deve depender de `Math.random` diretamente para corretude do sorteio
+- falhas de `localStorage` nao podem tornar a aplicacao inutilizavel
+
+---
+
+## Regras de dominio implementadas
+
+### Regras obrigatorias
+
+| Regra                    | Modulo                        | Descricao                                              |
+| ------------------------ | ----------------------------- | ------------------------------------------------------ |
+| Contagem correta         | `drawValidator`               | `participants.length === groups * teamsPerGroup`       |
+| Sem duplicidade          | `drawValidator`               | IDs unicos no Set de participantes                     |
+| Distribuicao uniforme    | `drawEngine`                  | Todos os grupos com exatamente `teamsPerGroup` equipes |
+| Invalidacao de resultado | `drawReducer` / `useDrawFlow` | Resultado limpo quando setup muda depois do sorteio    |
+
+### Regras opcionais implementadas
+
+#### Potes (`pot: 1 | 2 | 3 | 4`)
+
+- Cada equipe pode ter `pot` de 1 a 4 (atribuido no dataset)
+- O sorteio evita colocar duas equipes do mesmo pote no mesmo grupo
+- O validator rejeita cenarios inviaveis antes de iniciar o sorteio
+- Mensagem: `"Não é possível distribuir X equipes do pote Y em Z grupos com limite de 1 por grupo."`
+
+#### Confederacao FIFA-like
+
+| Confederacao | Limite por grupo |
+| ------------ | ---------------- |
+| UEFA         | 2                |
+| CONMEBOL     | 1                |
+| CONCACAF     | 1                |
+| AFC          | 1                |
+| CAF          | 1                |
+| OFC          | 1                |
+
+- A validacao de viabilidade roda antes do sorteio (`confederationValidation.ts`)
+- A mesma regra vale no sorteio automatico e na troca manual (`isTeamAllowedInGroup`)
+- Mensagem: `"Não é possível distribuir X equipes da UEFA em Y grupos com limite de 2 por grupo."`
+
+#### Seed deterministica
+
+- O sorteio gera ou recebe uma `seed` (inteiro positivo)
+- A `seed` passa a compor o `DrawResult`
+- O RNG usa o algoritmo **mulberry32** (`createSeededRng`) com **Fisher-Yates shuffle**
+- Com a mesma entrada e a mesma `seed`, o sorteio e reproduzivel
+
+### Estrategia do algoritmo
+
+O `drawEngine` usa dois caminhos:
+
+| Cenario                          | Algoritmo    | Complexidade  |
+| -------------------------------- | ------------ | ------------- |
+| Sem restricoes (policy = `none`) | Fisher-Yates | O(n)          |
+| Com potes e/ou confederacao      | Backtracking | Exponencial\* |
+
+\* Na pratica, com 32 equipes e restricoes FIFA-like, o backtracking converge rapidamente. Se a configuracao for inviavel, o validator ja rejeita antes de entrar no engine.
+
+```text
+drawEngine(participants, settings, options?)
+  │
+  ├─ drawValidator(participants, settings) → Result<ValidPayload>
+  │   ├─ valida contagem
+  │   ├─ valida duplicidade
+  │   ├─ valida distribuicao de potes
+  │   └─ valida distribuicao de confederacao
+  │
+  ├─ se nao precisa backtracking:
+  │   └─ shuffle + slice em grupos
+  │
+  └─ se precisa backtracking:
+      └─ assignTeamsWithBacktracking(shuffled, groups, settings, index, rng)
+          ├─ filtra grupos elegiveis (tamanho + confederacao + pote)
+          ├─ embaralha grupos elegiveis
+          ├─ tenta alocar no primeiro grupo
+          │   ├─ sucesso → avanca para o proximo time
+          │   └─ falha → desfaz (pop) e tenta proximo grupo
+          └─ retorna false se nenhum grupo aceita
+```
+
+### Comportamento esperado sob falha
+
+O sistema foi desenhado para falhar de forma explicita:
+
+| Cenario                      | Comportamento                                              |
+| ---------------------------- | ---------------------------------------------------------- |
+| Configuracao inviavel        | Validator rejeita com mensagem em portugues                |
+| Backtracking sem solucao     | Engine retorna `Result.error` com mensagem clara           |
+| localStorage corrompido      | Fallback para estado padrao, app continua funcional        |
+| localStorage indisponivel    | Operacoes de persistencia absorvem erro, UI nao quebra     |
+| Troca invalida (mesmo grupo) | Estado preservado, mensagem de erro exibida                |
+| Troca que viola confederacao | Estado preservado, equipes mantidas nas posicoes originais |
+
+---
 
 ## Decisoes arquiteturais
 
@@ -150,10 +539,13 @@ Se o produto virasse multi-edicao, multi-competicao ou colaborativo, uma bibliot
 
 As regras do sorteio vivem em `src/features/draw/domain/`:
 
-- `drawValidator`
-- `drawEngine`
-- `confederationPolicy`
-- `random`
+| Modulo                       | Responsabilidade                               | Linhas |
+| ---------------------------- | ---------------------------------------------- | ------ |
+| `drawEngine.ts`              | Algoritmo de sorteio (shuffle + backtracking)  | 148    |
+| `drawValidator.ts`           | 7 validacoes de entrada                        | 93     |
+| `confederationPolicy.ts`     | Regra de limite por confederacao               | 47     |
+| `confederationValidation.ts` | Viabilidade da distribuicao antes do sorteio   | 50     |
+| `random.ts`                  | Seeded RNG (mulberry32) + Fisher-Yates shuffle | 34     |
 
 Esses modulos nao importam React. Isso foi uma decisao central porque:
 
@@ -163,7 +555,19 @@ Esses modulos nao importam React. Isso foi uma decisao central porque:
 
 ### 4. Persistencia atras de repositorios
 
-Mesmo usando `localStorage`, o acesso foi encapsulado em uma camada de repositorio. Isso reduz espalhamento de `JSON.parse`, `JSON.stringify` e tratamento de falhas pelo app.
+Mesmo usando `localStorage`, o acesso foi encapsulado em uma camada de repositorio com interface generica:
+
+```typescript
+interface IStorageRepository {
+  save<T>(key: string, data: T): Result<true>;
+  load<T>(key: string): Result<T | null>;
+  clear(key: string): Result<true>;
+}
+
+interface ITeamRepository {
+  loadCatalog(): Result<Team[]>;
+}
+```
 
 Trade-off adotado:
 
@@ -172,21 +576,27 @@ Trade-off adotado:
 
 ### 5. Tema centralizado e tipado
 
-O sistema visual passou a ter:
+O sistema visual possui:
 
-- tema `light`
-- tema `dark`
-- `ThemeModeProvider`
-- tokens compartilhados de cor, espacamento, sombras e motion
+- tema `light` e tema `dark` com 29 cores semanticas cada
+- `ThemeModeProvider` com deteccao de `prefers-color-scheme`
+- tokens compartilhados de cor, espacamento, sombras, tipografia e motion
+- persistencia da preferencia em `localStorage`
 
-Isso evita dark mode “por excecao” e permite tratar o visual como parte da arquitetura, nao como uma camada cosmética solta.
+| Token       | Valores                                        |
+| ----------- | ---------------------------------------------- |
+| Spacing     | xs: 4px, sm: 8px, md: 16px, lg: 24px, xl: 32px |
+| Radii       | sm: 8px, md: 16px, lg: 32px, xl: 48px          |
+| Typography  | Inter (body/heading), JetBrains Mono (mono)    |
+| Motion      | fast: 160ms, base: 320ms, slow: 560ms          |
+| Breakpoints | xs: 480, sm: 640, md: 768, lg: 1024, xl: 1280  |
 
 ### 6. Motion com intencao, nao por excesso
 
 As animacoes foram mantidas curtas e funcionais:
 
 - entrada do painel de resultado
-- reveal escalonado dos grupos
+- reveal escalonado dos grupos (stagger step: 90ms)
 - microinteracoes de hover/focus
 - transicoes de tema e superficies
 
@@ -201,6 +611,24 @@ Mesmo com uma unica tela no MVP, `react-router-dom` foi mantido porque:
 - reduz custo futuro para separar historico, detalhes de sorteio ou outras views
 
 O trade-off aceito aqui foi carregar uma camada de roteamento que hoje parece pequena, em troca de manter uma fronteira arquitetural clara desde o inicio.
+
+### 8. Provider stack
+
+```typescript
+ThemeModeProvider                   // tema light/dark + persist + system preference
+  └─ TeamsProvider(initialState)    // catalogo + selectedIds + auto-persist
+      └─ DrawProvider(initialState) // settings + result + status + auto-persist
+          └─ App (BrowserRouter + Layout + Routes)
+```
+
+A hidratacao acontece em `AppProviders.tsx` via `restoreAppState()`, que:
+
+1. carrega o catalogo de times pelo repositorio
+2. restaura `selectedIds` do localStorage
+3. restaura `drawState` do localStorage
+4. monta o estado hidratado filtrando IDs orfaos e resultados stale
+
+---
 
 ## Alternativas consideradas
 
@@ -233,142 +661,253 @@ Foi deliberadamente deixado de fora do MVP porque a troca via selects:
 
 Se o produto evoluir, o passo correto seria um drag-and-drop acessivel, nao uma interacao mouse-only.
 
-## Estrutura do projeto
-
-```text
-src/
-  app/            # bootstrap, providers, restore, routing
-  components/     # layout e componentes compartilhados
-  constants/      # dataset, chaves de storage, constantes gerais
-  features/
-    draw/
-      components/     # configuracao, resultado, resumo, swap, ready state
-      configuration/  # presets de sorteio
-      context/        # reducer + provider do sorteio
-      domain/         # engine, validator, RNG, politicas
-      history/        # salvar, restaurar e comparar sorteios
-      hooks/          # orquestracao do fluxo da pagina
-      utils/          # share, sumarios, helpers de dominio
-    teams/
-      components/     # combobox, catalogo e painel de selecionados
-      context/        # reducer + provider de participantes
-      hooks/          # busca, debounce e selecao
-      repositories/   # catalogo local e contrato de dados
-      utils/          # filtro, normalizacao e busca
-  pages/          # pagina principal e subareas da tela
-  repositories/   # persistencia local generica
-  theme/          # tokens, global styles e provider de tema
-  types/          # contratos de dominio
-```
-
-## Fluxo principal da aplicacao
-
-1. O catalogo local e carregado pelo repositorio de times.
-2. O usuario busca e seleciona participantes via combobox acessivel.
-3. `DrawPage` coordena os slices `teams` e `draw`.
-4. Ao iniciar o sorteio, `drawValidator` confirma se a configuracao e viavel.
-5. `drawEngine` executa shuffle simples ou backtracking, conforme as restricoes ativas.
-6. O `DrawResult` gerado e persistido junto com a configuracao atual.
-7. A UI passa para o estado de resultado, habilitando share, save, compare, re-sort e swap manual.
-8. Se participantes ou configuracao mudarem depois disso, o resultado anterior e invalidado para evitar inconsistencias.
-
-## Invariantes importantes do sistema
-
-Estas regras ajudam a entender o desenho do codigo:
-
-- um resultado salvo sempre reflete um conjunto especifico de participantes + configuracao + seed
-- um resultado exibido nao pode sobreviver a mudancas de setup sem ser invalidado
-- regras de restricao precisam valer tanto no sorteio automatico quanto nas trocas manuais
-- a UI nunca deve depender de `Math.random` diretamente para corretude do sorteio
-- falhas de `localStorage` nao podem tornar a aplicacao inutilizavel
-
-## Regras de dominio implementadas
-
-### Regras obrigatorias
-
-- Nao permite sorteio com contagem incorreta de participantes
-- Nao permite duplicidade de selecao
-- Mantem distribuicao uniforme entre grupos
-- Invalida resultado antigo quando participantes ou configuracao mudam
-
-### Regras opcionais implementadas
-
-#### Potes
-
-- Cada equipe pode ter `pot` de `1` a `4`
-- O sorteio evita colocar duas equipes do mesmo pote no mesmo grupo
-- O validator rejeita cenarios inviaveis antes de iniciar o sorteio
-
-#### Confederacao FIFA-like
-
-- UEFA: maximo 2 por grupo
-- Demais confederacoes: maximo 1 por grupo
-- A mesma regra vale tanto no sorteio automatico quanto na troca manual
-
-#### Seed deterministica
-
-- O sorteio gera ou recebe uma `seed`
-- A `seed` passa a compor o `DrawResult`
-- Com a mesma entrada e a mesma `seed`, o sorteio pode ser reproduzido
-
-### Estrategia do algoritmo
-
-O `drawEngine` usa dois caminhos:
-
-- shuffle simples quando nao ha restricoes adicionais
-- backtracking quando existe politica de confederacao e/ou restricao por pote
-
-Essa escolha evita custo desnecessario no caso simples e, ao mesmo tempo, preserva corretude quando o dominio exige busca com restricoes.
-
-### Comportamento esperado sob falha
-
-O sistema foi desenhado para falhar de forma explicita:
-
-- configuracoes inviaveis sao rejeitadas no validator antes de entrar no engine
-- falhas de sorteio aparecem como erro de produto, nao como quebra silenciosa
-- falhas de persistencia local sao absorvidas defensivamente para manter a UI utilizavel
-- trocas invalidas preservam o estado anterior e exibem mensagem clara ao usuario
+---
 
 ## UX e acessibilidade
 
 Itens tratados como requisitos de produto, nao como polimento:
 
-- Combobox com suporte a teclado
-- `aria-*` nas areas principais
-- tabs com semantica de `tablist`
-- live regions para loading e feedback
-- skip link para o conteudo principal
-- modais com foco inicial controlado
-- suporte a `Escape` nos dialogs
-- feedback de erro e sucesso em texto visivel
-- toggle de tema claro/escuro com estado persistido
-- suporte a `prefers-reduced-motion`
+| Recurso                    | Implementacao                                               |
+| -------------------------- | ----------------------------------------------------------- |
+| Combobox acessivel         | `role="combobox"`, `aria-expanded`, `aria-activedescendant` |
+| Navegacao por teclado      | Arrow keys, Enter, Escape, Home, End no autocomplete        |
+| Tabs semanticas            | `role="tablist"`, `role="tab"`, `role="tabpanel"`           |
+| Live regions               | `aria-live="polite"` para loading e feedback                |
+| Skip link                  | Link para `#main-content` visivel em focus                  |
+| Focus management em modais | Foco inicial controlado, `Escape` para fechar               |
+| Feedback de erro e sucesso | Texto visivel, nao apenas cor                               |
+| Dark mode                  | Toggle com persistencia + deteccao de system preference     |
+| Reduced motion             | `prefers-reduced-motion` respeitado em todas as animacoes   |
+
+### SEO e meta tags
+
+O `index.html` inclui:
+
+- Open Graph tags completas (title, description, image, locale)
+- Twitter Card (summary_large_image)
+- JSON-LD structured data (WebApplication schema)
+- Favicon SVG + PNG 32px + Apple Touch Icon
+- Web manifest (`manifest.json`)
+- Font preloading com `media="print"` + `onload` para nao bloquear render
+
+---
 
 ## Estrategia de testes
 
 A suite atual cobre **23 arquivos de teste** e **131 testes**.
 
-### Unitarios
+### Distribuicao por tipo
 
-- validacao do sorteio
-- engine do sorteio
-- politica por confederacao
-- reducers
-- normalizacao e filtro de busca
-- persistencia local
-- presets
-- sumarizacao e historico
+| Tipo            | Arquivos | Testes | O que cobre                                                |
+| --------------- | -------- | ------ | ---------------------------------------------------------- |
+| Unitarios       | 14       | 62     | Dominio, reducers, utilitarios, persistencia, presets      |
+| Integracao (UI) | 9        | 69     | Fluxos completos com render, user-event e assertions de UI |
 
-### Integracao
+### Catalogo completo de testes
 
-- selecionar equipes via busca e sortear
-- invalidador de resultado antigo
-- restore da sessao ao recarregar
-- salvar, compartilhar e comparar sorteios
-- swap manual e undo
-- resiliencia quando `localStorage` falha
-- toggle de dark mode persistido
-- reveal escalonado dos grupos renderizados
+#### Testes unitarios
+
+**`drawValidator.test.ts`** (8 testes)
+
+- rejeita grupo < minimo
+- rejeita participantes != configuracao
+- rejeita IDs duplicados
+- aceita participantes validos
+- rejeita distribuicao de confederacao inviavel com FIFA-like
+- aceita distribuicao viavel com FIFA-like
+- rejeita distribuicao de pote inviavel
+- aceita distribuicao FIFA-like que depende do limite duplo da UEFA
+
+**`drawEngine.test.ts`** (3 testes)
+
+- cria grupos uniformes sem duplicatas
+- retorna erro de validacao em vez de gerar sorteio invalido
+- cria grupos FIFA-like sem violar limites de confederacao
+
+**`confederationPolicy.test.ts`** (6 testes)
+
+- retorna sem limite quando policy = none
+- retorna limite 2 para UEFA com FIFA-like
+- retorna limite 1 para CONMEBOL com FIFA-like
+- permite segundo time UEFA no grupo com FIFA-like
+- rejeita terceiro time UEFA no grupo com FIFA-like
+- rejeita grupo que excede limite da UEFA
+
+**`drawReducer.test.ts`** (10 testes)
+
+- atualiza settings e mantem slice configurado
+- transiciona por loading e drawn
+- invalida resultado stale sem perder settings
+- invalida resultado quando policy de confederacao muda
+- troca equipes entre grupos e preserva tamanho
+- mantem estado quando mesmo time e enviado duas vezes
+- rejeita swap quando tenta reusar o mesmo grupo
+- armazena erro de sorteio e mantem slice configurado
+- rejeita swap que quebraria policy de confederacao
+- armazena resultado anterior apos swap e limpa apos undo
+
+**`filterTeams.test.ts`** (4 testes)
+
+- normaliza case e acentos
+- filtra por nome ou codigo e exclui selecionados
+- filtra por confederacao e query combinados
+- retorna equipes selecionadas com filtro "selected"
+
+**`localTeamRepository.test.ts`** (1 teste)
+
+- carrega catalogo com IDs estaveis
+
+**`localStorageRepository.test.ts`** (7 testes)
+
+- salva e carrega dados estruturados
+- retorna null para chaves ausentes
+- retorna erro para JSON invalido
+- limpa dados persistidos
+- retorna indisponivel quando window.localStorage nao existe
+- fallback para erros genericos em excepcoes non-Error
+- retorna erro de leitura quando storage lanca excecao
+
+**`createHydratedAppState.test.ts`** (4 testes)
+
+- filtra IDs orfaos e mantem draw restaurado coerente
+- hidrata draws legados sem seed
+- descarta resultado stale e mantem settings salvos
+- fallback para defaults quando draw state e invalido
+
+**`drawPresets.test.ts`** (4 testes)
+
+- aplica preset padrao com settings default
+- aplica preset compacto sem criar estado extra
+- mantem sizing e troca apenas policy para FIFA-like
+- declara os IDs de preset esperados pelo painel
+
+**`useSimulatorPageFlow.test.ts`** (8 testes)
+
+- deriva empty quando nenhuma equipe esta selecionada
+- deriva selecting enquanto setup esta incompleto
+- deriva ready quando sorteio pode rodar
+- deriva drawing enquanto engine esta rodando
+- deriva result apos sorteio bem-sucedido
+- deriva swap_error quando resultado renderizado tem erro
+- mostra erro de sorteio mesmo quando simulator faz fallback para ready
+- volta para selecting quando resultado stale desaparece
+
+**`drawPageUtils.test.ts`** (8 testes)
+
+- retorna wording de empty state do desafio
+- retorna resumo de mudanca de settings em portugues
+- retorna null quando settings nao muda
+- detecta sessao nao salva a partir de equipes, resultado ou drift
+- cria nome de arquivo esperado para download
+- usa smooth scroll fora do jsdom
+- faz download do resultado como JSON
+- faz scroll ao topo apenas quando smooth scrolling e suportado
+
+**`summarizeDrawResult.test.ts`** (1 teste)
+
+- deriva metricas factuais a partir do resultado
+
+**`savedDrawHistory.test.ts`** (3 testes)
+
+- cria entrada salva com label e preserva metadados
+- hidrata entries legados sem label com fallback legivel
+- descarta registros malformados na sanitizacao
+
+**`compareSavedDraws.test.ts`** (2 testes)
+
+- marca grupos como changed quando composicao difere
+- trata identidade de grupo como igual quando mesmos times presentes
+
+#### Testes de integracao (UI)
+
+**`App.test.tsx`** (6 testes)
+
+- roteia search trigger do header para o combobox de participantes
+- refocaliza combobox quando search e disparado novamente
+- renderiza o shell do simulador
+- fornece tema compartilhado para conteudo filho
+- alterna dark mode pelo header e persiste selecao
+- restaura dark mode da preferencia persistida na montagem
+
+**`routes.test.tsx`** (1 teste)
+
+- renderiza a pagina de sorteio na rota raiz
+
+**`persistenceRestore.test.tsx`** (3 testes)
+
+- restaura selecao, settings e resultado salvo ao recarregar
+- fallback seguro quando storage contem JSON invalido
+- mantem UI usavel mesmo quando writes no storage falham
+
+**`teamSearchFlow.test.tsx`** (7 testes)
+
+- abre a view de participantes e permite selecao por teclado via codigo
+- atualiza lista de sugestoes apenas apos debounce
+- suporta busca por codigo, remocao, clear all e feedback de vazio
+- limpa feedback de no-match assim que nova query inicia
+- remove matches stale do catalogo quando query muda
+- filtra catalogo por confederacao e mantem query composta com chip ativo
+- mostra equipes selecionadas quando quick filter "selected" esta ativo
+
+**`drawConfigurationFlow.test.tsx`** (11 testes)
+
+- mostra atividade de sessao real no ready state
+- loga delta real de autofill quando catalogo nao atende capacidade
+- desbloqueia configuracao progressivamente, suporta autofill e armazena resultado
+- registra mudancas de policy de confederacao na atividade
+- aplica preset pelo mesmo fluxo de settings e invalida resultado atual
+- mostra feedback de validacao e desabilita botao com FIFA-like
+- roda sorteio bem-sucedido para set viavel com FIFA-like
+- mantem sorteio em loading ate delay configurado terminar
+- mostra erro visivel quando engine falha apos iniciar sorteio
+- limpa erro stale apos selecao de participantes mudar
+- comeca com defaults do desafio para torneio de 32 equipes
+
+**`drawResultsPanel.test.tsx`** (19 testes)
+
+- usa wording do desafio quando nao ha resultado
+- usa copy neutro de loading enquanto sorteio esta em andamento
+- mostra dados atuais no header e descricao do resultado
+- renderiza resumo executivo do resultado
+- aplica delay escalonado de reveal em cada group card
+- atualiza resumo executivo quando dados mudam
+- compartilha resultado via Web Share API e loga feedback
+- copia resultado via clipboard quando share nao esta disponivel
+- reporta falha de clipboard quando writeText rejeita
+- reporta compartilhamento indisponivel quando nem Share nem clipboard existem
+- abre modal de save com label sugerido antes de salvar
+- cancela flow de save sem limpar sessao ativa
+- faz download do JSON, armazena no historico e limpa sessao ao salvar
+- armazena label customizado no historico apos confirmar modal
+- mantem sessao ativa quando save no historico falha
+- re-sorteia sessao ativa sem salvar ou fazer download
+- mostra alerta quando swap mantem equipes no mesmo grupo
+- mostra alerta e preserva equipes quando swap viola policy de confederacao
+- restaura composicao anterior apos undo do ultimo swap
+
+**`drawPersistenceFlow.test.tsx`** (10 testes)
+
+- restaura resultado salvo no shell do simulador
+- restaura valores de configuracao persistidos na aba de opcoes
+- fallback de settings legados restaurados para policy irrestrita
+- invalida resultado restaurado quando selecao de participantes muda
+- invalida resultado valido imediatamente apos mudanca de configuracao
+- restaura sorteio salvo do historico para sessao ativa
+- pede confirmacao antes de substituir sessao ativa nao salva
+- restaura sorteio salvo apos confirmar substituicao
+- abre comparacao lado a lado apos selecionar dois entries do historico
+- restaura o lado escolhido da comparacao
+
+**`useDrawFlow.test.tsx`** (3 testes)
+
+- limpa timeout pendente antes de resetar sessao de sorteio
+- limpa timeout pendente antes de restaurar estado salvo
+- pula proximo reset de selecao imediatamente apos restaurar estado
+
+**`drawPageSections.test.tsx`** (2 testes)
+
+- renderiza overlay de selecao com contagens atuais de participantes
+- roteia acoes do footer pelos callbacks fornecidos
 
 ### O que os testes procuram garantir
 
@@ -380,24 +919,46 @@ Mais do que contar arquivos, a estrategia foi validar riscos reais do produto:
 - persistencia quebrada nao derruba a experiencia
 - recursos opcionais como share, historico, dark mode e motion nao regressam silenciosamente
 
-## Qualidade e convenções
+### Ferramentas e padroes de teste
 
-- TypeScript strict
-- `Result<T>` para operacoes com falha esperada
-- ESLint e Prettier configurados
-- Husky + lint-staged + commitlint
-- Codigo-fonte em ingles e interface em portugues
-- Persistencia com tratamento defensivo para falhas de storage
+| Ferramenta                    | Uso                                                          |
+| ----------------------------- | ------------------------------------------------------------ |
+| `vitest`                      | Runner, assertions, mocks (`vi.fn`, `vi.spyOn`, `vi.mock`)   |
+| `@testing-library/react`      | `render`, `renderHook`, `screen`, `within`, `waitFor`        |
+| `@testing-library/user-event` | Simulacao de interacao real (click, type, keyboard)          |
+| `@testing-library/jest-dom`   | Matchers estendidos (`toBeInTheDocument`, `toHaveAttribute`) |
+| `jsdom`                       | Ambiente de DOM para testes                                  |
+
+---
+
+## Qualidade e convencoes
+
+| Pratica                | Detalhe                                                                            |
+| ---------------------- | ---------------------------------------------------------------------------------- |
+| TypeScript strict      | `strict: true`, `noUnusedLocals`, `noUnusedParameters`, `noUncheckedIndexedAccess` |
+| `Result<T>`            | Para operacoes com falha esperada, sem throw                                       |
+| ESLint 9               | Flat config, `typescript-eslint` recommended + stylistic                           |
+| Prettier               | `printWidth: 100`, `singleQuote: true`, `trailingComma: none`                      |
+| Husky                  | Pre-commit hooks com lint-staged                                                   |
+| lint-staged            | `eslint --fix` + `prettier --write` nos arquivos staged                            |
+| commitlint             | Conventional commits (`feat:`, `fix:`, `chore:`, `test:`, `docs:`)                 |
+| EditorConfig           | UTF-8, LF, 2 spaces, final newline                                                 |
+| Codigo-fonte em ingles | Variaveis, funcoes, tipos, componentes, testes                                     |
+| Interface em portugues | Textos de UI, mensagens de erro, labels                                            |
+
+---
 
 ## Trade-offs adotados
 
 ### O que ficou de fora de proposito
 
-- **Mata-mata**: nao fazia parte do escopo minimo escolhido
-- **Backend/API**: desafio aceitava dataset local e persistencia simples
-- **SSR**: nao trazia valor proporcional para uma SPA local-first deste escopo
-- **Drag-and-drop**: a troca manual por selects entrega o requisito com menor custo e mais previsibilidade de acessibilidade
-- **PWA/offline**: bom candidato para evolucao, mas fora do objetivo principal do take-home
+| Item          | Motivo                                                                      |
+| ------------- | --------------------------------------------------------------------------- |
+| Mata-mata     | Nao fazia parte do escopo minimo escolhido (Opcao A)                        |
+| Backend/API   | Desafio aceitava dataset local e persistencia simples                       |
+| SSR           | Nao trazia valor proporcional para uma SPA local-first deste escopo         |
+| Drag-and-drop | Troca via selects entrega o requisito com menor custo e mais acessibilidade |
+| PWA/offline   | Bom candidato para evolucao, mas fora do objetivo principal do take-home    |
 
 ### O que foi priorizado
 
@@ -406,17 +967,24 @@ Mais do que contar arquivos, a estrategia foi validar riscos reais do produto:
 - testabilidade
 - documentacao alinhada ao codigo entregue
 
+---
+
 ## Como eu avaliaria este repositorio em uma entrevista
 
 Se eu estivesse revisando este projeto como entrevistador tecnico, os pontos que eu abriria primeiro seriam:
 
-- `src/features/draw/domain/` para entender a modelagem e a corretude do sorteio
-- `src/features/teams/components/TeamSearchCombobox.tsx` para avaliar UX e acessibilidade da busca
-- `src/features/draw/hooks/useDrawFlow.ts` para ver a orquestracao da sessao
-- `src/app/AppProviders.tsx` e `src/app/persistence/restoreAppState.ts` para entender hidratacao e resiliencia
-- `src/features/draw/__tests__/drawConfigurationFlow.test.tsx` e `src/features/draw/__tests__/drawResultsPanel.test.tsx` para conferir a confianca dos fluxos reais
+| Arquivo                                                      | O que avaliar                       |
+| ------------------------------------------------------------ | ----------------------------------- |
+| `src/features/draw/domain/`                                  | Modelagem e corretude do sorteio    |
+| `src/features/teams/components/TeamSearchCombobox.tsx`       | UX e acessibilidade da busca        |
+| `src/features/draw/hooks/useDrawFlow.ts`                     | Orquestracao da sessao              |
+| `src/app/AppProviders.tsx` + `restoreAppState.ts`            | Hidratacao e resiliencia            |
+| `src/features/draw/__tests__/drawConfigurationFlow.test.tsx` | Confianca dos fluxos reais          |
+| `src/features/draw/__tests__/drawResultsPanel.test.tsx`      | Cobertura dos cenarios de resultado |
 
 Essa trilha de leitura foi um criterio de organizacao do projeto: o repositorio deveria continuar legivel para uma avaliacao senior em tempo limitado.
+
+---
 
 ## Limitacoes atuais
 
@@ -434,6 +1002,8 @@ Essa trilha de leitura foi um criterio de organizacao do projeto: o repositorio 
 - Explorar PWA e offline-first
 - Expandir o dominio para multiplas edicoes da Copa
 
+---
+
 ## IA no desenvolvimento
 
 O uso de IA foi documentado em [AI_USAGE.md](./AI_USAGE.md).
@@ -443,4 +1013,6 @@ O uso de IA foi documentado em [AI_USAGE.md](./AI_USAGE.md).
 Ultima verificacao local desta versao:
 
 - `npm run build` passando
-- `npx vitest run` passando com **23 arquivos** e **131 testes**
+- `npm run validate` passando (typecheck + lint + format + testes)
+- **23 arquivos de teste** e **131 testes**
+- Build de producao: **~93 kB gzip** em 3 chunks
