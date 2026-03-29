@@ -74,6 +74,10 @@ const Card = styled.div`
   @media (max-width: 600px) {
     border-radius: 8px;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    border-radius: 6px;
+  }
 `;
 
 const CardHeader = styled.div`
@@ -89,6 +93,10 @@ const CardHeader = styled.div`
 
   @media (max-width: 600px) {
     padding: 10px 16px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 8px 12px;
   }
 `;
 
@@ -141,12 +149,25 @@ const TeamRow = styled.div<{ $isLast: boolean }>`
       padding-left: 16px;
     }
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 10px 12px;
+    gap: 8px;
+
+    &:hover {
+      padding-left: 12px;
+    }
+  }
 `;
 
 const TeamInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    gap: 10px;
+  }
 `;
 
 const PotBadge = styled.span`
@@ -169,6 +190,14 @@ const TeamNameText = styled.span`
     font-size: 14px;
     font-weight: 700;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 13px;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 const ConfedPill = styled.span`
@@ -178,6 +207,12 @@ const ConfedPill = styled.span`
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 2px 6px;
+    font-size: 8px;
+    letter-spacing: 0.02em;
+  }
 
   &[data-confed='UEFA'] {
     background-color: #e8f0fe;

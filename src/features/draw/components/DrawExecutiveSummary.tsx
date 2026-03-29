@@ -96,6 +96,11 @@ const SummarySection = styled.section`
     ${({ theme }) => theme.colors.supportSoft}
   );
   border: 1px solid ${({ theme }) => theme.colors.line};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 16px;
+    gap: 16px;
+  }
 `;
 
 const SummaryHeader = styled.div`
@@ -122,7 +127,12 @@ const SummaryTitle = styled.h2`
 const MetricsGrid = styled.div`
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
 `;
 
 const MetricCard = styled.div`
@@ -146,6 +156,10 @@ const MetricCard = styled.div`
     color: ${({ theme }) => theme.colors.textMuted};
     text-transform: uppercase;
     letter-spacing: 0.06em;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+      font-size: 0.7rem;
+    }
   }
 `;
 
@@ -165,6 +179,10 @@ const DetailCard = styled.div`
   border-radius: ${({ theme }) => theme.radii.lg};
   border: 1px solid ${({ theme }) => theme.colors.line};
   background: ${({ theme }) => theme.colors.surfaceGlass};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 16px;
+  }
 `;
 
 const DetailTitle = styled.h3`

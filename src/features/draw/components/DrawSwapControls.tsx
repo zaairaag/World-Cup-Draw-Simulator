@@ -199,6 +199,13 @@ const Panel = styled.form`
     padding: 32px 20px;
     gap: 32px;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    margin-top: 32px;
+    padding: 24px 16px;
+    gap: 24px;
+    border-radius: 12px;
+  }
 `;
 
 const PanelHeader = styled.div`
@@ -224,6 +231,10 @@ const PanelTitle = styled.h2`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 24px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 20px;
   }
 `;
 
@@ -286,6 +297,12 @@ const FieldSelect = styled.select`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    height: 48px;
+    font-size: 14px;
+    padding: 0 12px;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -320,6 +337,12 @@ const SubmitButton = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    height: 52px;
+    font-size: 15px;
+    max-width: 100%;
+  }
 `;
 
 const ActionRow = styled.div`
@@ -349,5 +372,12 @@ const UndoButton = styled.button`
     border-color: ${({ theme }) => theme.colors.support};
     background-color: ${({ theme }) => theme.colors.supportSoft};
     transform: translateY(-1px);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    min-height: 48px;
+    font-size: 13px;
+    flex: 1;
+    text-align: center;
   }
 `;

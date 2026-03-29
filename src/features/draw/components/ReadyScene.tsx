@@ -189,6 +189,12 @@ const HeroSection = styled.header`
     flex-direction: column;
     align-items: flex-start;
     padding: 32px;
+    gap: 24px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 24px 16px;
+    gap: 16px;
   }
 `;
 
@@ -227,6 +233,7 @@ const HeroDescription = styled.p`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 15px;
+    margin-bottom: 0px;
   }
 `;
 
@@ -240,6 +247,17 @@ const StatusBadge = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 16px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 16px;
+  }
 `;
 
 const StatusLabel = styled.span`
@@ -259,12 +277,20 @@ const StatusValue = styled.div`
     font-size: 32px;
     font-weight: 900;
     color: ${({ theme }) => theme.colors.accent};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+      font-size: 24px;
+    }
   }
 
   .divider {
     font-size: 18px;
     font-weight: 700;
     color: ${({ theme }) => theme.colors.secondary};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+      font-size: 14px;
+    }
   }
 `;
 
@@ -308,6 +334,11 @@ const ConfigCard = styled.section`
   animation: ${sectionEnter} ${({ theme }) => theme.motion.slow}
     ${({ theme }) => theme.motion.easing} both;
   animation-delay: 90ms;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 24px 16px;
+    gap: 16px;
+  }
 `;
 
 const CardHeader = styled.h2`
@@ -395,6 +426,11 @@ const DrawButton = styled.button`
   cursor: pointer;
   transition: all 0.2s;
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    height: 56px;
+    font-size: 16px;
+  }
+
   &:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 12px 20px rgba(0, 109, 49, 0.2);
@@ -462,6 +498,10 @@ const TeamsCard = styled.div`
   animation: ${sectionEnter} ${({ theme }) => theme.motion.slow}
     ${({ theme }) => theme.motion.easing} both;
   animation-delay: 120ms;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding: 24px 16px;
+  }
 `;
 
 const TeamsHeader = styled.div`

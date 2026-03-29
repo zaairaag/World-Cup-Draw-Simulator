@@ -141,6 +141,12 @@ const Panel = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     gap: 24px;
+    padding-top: 32px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    padding-top: 24px;
+    gap: 16px;
   }
 `;
 
@@ -187,6 +193,15 @@ const PageTitle = styled.h1`
       font-size: 14px;
     }
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 22px;
+    gap: 8px;
+
+    span {
+      font-size: 13px;
+    }
+  }
 `;
 
 const StatusTag = styled.div`
@@ -221,7 +236,11 @@ const Description = styled.p`
   margin: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 16px;
+    font-size: 14px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 13px;
   }
 `;
 
@@ -246,6 +265,10 @@ const GroupsGrid = styled.div`
 
   @media (max-width: 600px) {
     gap: 20px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    gap: 16px;
   }
 `;
 

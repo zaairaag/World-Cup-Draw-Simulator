@@ -205,7 +205,8 @@ const HeaderContainer = styled(Container)`
   align-items: center;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    padding: 0 8px;
+    padding: 0 12px;
+    gap: 12px;
   }
 `;
 
@@ -216,6 +217,10 @@ const HeaderLeft = styled.div`
   justify-self: start;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    gap: 0;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     gap: 0;
   }
 `;
@@ -245,7 +250,7 @@ const HeaderButton = styled.button`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    padding: 0 8px;
+    padding: 0 4px;
 
     & > span:last-child {
       display: none;
@@ -280,6 +285,10 @@ const Logo = styled.span`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 42px;
   }
+
+  @media (max-width: 400px) {
+    font-size: 36px;
+  }
 `;
 
 const HeaderRight = styled.div`
@@ -290,6 +299,10 @@ const HeaderRight = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     gap: 8px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    gap: 4px;
   }
 `;
 
@@ -360,8 +373,8 @@ const UserBadge = styled.div`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    padding: 3px 8px 3px 3px;
-    gap: 4px;
+    padding: 3px;
+    gap: 0;
   }
 `;
 
@@ -383,11 +396,7 @@ const UserName = styled.span`
   font-weight: 700;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    font-size: 11px;
-    max-width: 56px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    display: none;
   }
 `;
 
