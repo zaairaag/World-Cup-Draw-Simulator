@@ -94,13 +94,14 @@ const Backdrop = styled.div`
   align-items: center;
   justify-content: center;
   padding: ${({ theme }) => theme.spacing.md};
-  background: rgba(26, 28, 28, 0.45);
-  backdrop-filter: blur(4px);
+  background: ${({ theme }) => theme.colors.overlay};
+  backdrop-filter: blur(8px);
 `;
 
 const Panel = styled.div`
   width: min(100%, 400px);
-  background: ${({ theme }) => theme.colors.surface};
+  background: ${({ theme }) => theme.colors.surfaceGlass};
+  border: 1px solid ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.md};
   box-shadow: ${({ theme }) => theme.shadows.panel};
   padding: ${({ theme }) => theme.spacing.lg};
@@ -146,15 +147,22 @@ const SecondaryButton = styled.button`
   height: 40px;
   min-width: 112px;
   padding: 0 ${({ theme }) => theme.spacing.md};
-  border: none;
+  border: 1px solid ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.sm};
-  background-color: rgba(0, 169, 80, 0.12);
-  color: ${({ theme }) => theme.colors.accentDark};
+  background-color: ${({ theme }) => theme.colors.surfaceAlt};
+  color: ${({ theme }) => theme.colors.text};
   font-size: 12px;
   font-weight: 900;
   text-transform: uppercase;
   cursor: pointer;
   font-family: inherit;
+  transition:
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    border-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.surfaceMuted};
+  }
 
   &:focus-visible {
     outline: 3px solid ${({ theme }) => theme.colors.focus};
@@ -169,12 +177,14 @@ const PrimaryButton = styled.button`
   border: none;
   border-radius: ${({ theme }) => theme.radii.sm};
   background-color: ${({ theme }) => theme.colors.accent};
-  color: #ffffff;
+  color: ${({ theme }) => theme.colors.headerText};
   font-size: 12px;
   font-weight: 900;
   text-transform: uppercase;
   cursor: pointer;
   font-family: inherit;
+  transition: background-color ${({ theme }) => theme.motion.fast}
+    ${({ theme }) => theme.motion.easing};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.accentStrong};

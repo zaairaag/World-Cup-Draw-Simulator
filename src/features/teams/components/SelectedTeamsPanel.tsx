@@ -89,7 +89,7 @@ const PanelTitle = styled.h3`
 const ClearButton = styled.button`
   font-size: 11px;
   font-weight: 700;
-  color: #b91c1c;
+  color: ${({ theme }) => theme.colors.dangerText};
   background: none;
   border: none;
   padding: 0;
@@ -120,8 +120,8 @@ const SelectedList = styled.ul`
 
 const SelectedItem = styled.div`
   padding: 12px 16px;
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.md};
   display: flex;
   justify-content: space-between;
@@ -129,7 +129,7 @@ const SelectedItem = styled.div`
   transition: all 0.2s;
 
   &:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: ${({ theme }) => theme.shadows.soft};
   }
 `;
 
@@ -170,9 +170,9 @@ const RemoveButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #fef2f2;
-    color: #b91c1c;
-    border-color: #fee2e2;
+    background-color: ${({ theme }) => theme.colors.dangerBg};
+    color: ${({ theme }) => theme.colors.dangerText};
+    border-color: ${({ theme }) => theme.colors.dangerBorder};
   }
 
   &::after {

@@ -104,8 +104,9 @@ const QuickFilterButton = styled.button<{ $active: boolean }>`
   min-height: 36px;
   padding: 0 12px;
   border-radius: 999px;
-  border: 1px solid ${({ $active }) => ($active ? 'rgba(0, 169, 80, 0.35)' : 'rgba(0, 0, 0, 0.08)')};
-  background-color: ${({ $active }) => ($active ? 'rgba(0, 169, 80, 0.12)' : 'white')};
+  border: 1px solid ${({ $active, theme }) => ($active ? theme.colors.accent : theme.colors.line)};
+  background-color: ${({ $active, theme }) =>
+    $active ? theme.colors.accentSoft : theme.colors.surface};
   color: ${({ $active, theme }) => ($active ? theme.colors.accentDark : theme.colors.textMuted)};
   font-size: 11px;
   font-weight: 900;
@@ -127,7 +128,7 @@ const CatalogList = styled.ul`
 
 const CatalogButton = styled.button`
   width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.md};
   background-color: ${({ theme }) => theme.colors.surfaceAlt};
   padding: 12px 16px;
@@ -138,8 +139,8 @@ const CatalogButton = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    background-color: white;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    background-color: ${({ theme }) => theme.colors.surface};
+    box-shadow: ${({ theme }) => theme.shadows.soft};
     transform: translateY(-2px);
     border-color: ${({ theme }) => theme.colors.accent};
   }
@@ -149,8 +150,8 @@ const CatalogButton = styled.button`
     opacity: 0.7;
     transform: none;
     box-shadow: none;
-    border-color: rgba(0, 169, 80, 0.14);
-    background-color: rgba(0, 169, 80, 0.06);
+    border-color: ${({ theme }) => theme.colors.accent};
+    background-color: ${({ theme }) => theme.colors.accentSoft};
   }
 `;
 

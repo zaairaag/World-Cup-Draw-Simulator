@@ -107,7 +107,7 @@ const View = styled.div`
   padding: 48px;
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.xl};
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.line};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 24px 16px;

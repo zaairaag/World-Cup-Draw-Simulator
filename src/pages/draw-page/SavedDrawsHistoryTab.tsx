@@ -81,7 +81,7 @@ const View = styled.div`
   padding: 48px;
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.xl};
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.line};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 24px 16px;
@@ -163,7 +163,7 @@ const HistoryCard = styled.div`
   padding: 20px 24px;
   border-radius: ${({ theme }) => theme.radii.md};
   background-color: ${({ theme }) => theme.colors.surfaceAlt};
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid ${({ theme }) => theme.colors.line};
   transition: border-color 0.2s;
 
   &:hover {
@@ -184,7 +184,7 @@ const CardIndex = styled.span`
   height: 36px;
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.accent};
-  color: white;
+  color: ${({ theme }) => theme.colors.headerText};
   font-size: 14px;
   font-weight: 900;
   display: flex;
@@ -255,7 +255,7 @@ const RestoreButton = styled.button`
   white-space: nowrap;
 
   &:hover {
-    background-color: rgba(0, 169, 80, 0.18);
+    background-color: ${({ theme }) => theme.colors.accentSoft};
   }
 
   &:focus-visible {

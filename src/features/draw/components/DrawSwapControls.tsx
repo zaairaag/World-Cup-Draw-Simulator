@@ -186,13 +186,13 @@ export const DrawSwapControls = memo(function DrawSwapControls({
 const Panel = styled.form`
   margin-top: 64px;
   padding: 48px;
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.xl};
   display: flex;
   flex-direction: column;
   gap: 40px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: ${({ theme }) => theme.shadows.soft};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-top: 40px;
@@ -265,22 +265,20 @@ const FieldLabel = styled.label`
 
 const FieldSelect = styled.select`
   height: 56px;
-  background-color: ${({ theme }) => theme.colors.background};
-  border: 1px solid rgba(188, 202, 186, 0.4);
+  background-color: ${({ theme }) => theme.colors.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.sm};
   padding: 0 16px;
   font-size: 15px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
-  transition: all 0.2s;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
+  transition:
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    border-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
 
   &:hover:not(:disabled) {
-    background-color: white;
+    background-color: ${({ theme }) => theme.colors.surface};
     border-color: ${({ theme }) => theme.colors.accent};
   }
 
@@ -293,7 +291,7 @@ const FieldSelect = styled.select`
 const SubmitButton = styled.button`
   height: 64px;
   background-color: ${({ theme }) => theme.colors.support};
-  color: white;
+  color: ${({ theme }) => theme.colors.headerText};
   font-weight: 900;
   font-size: 18px;
   text-transform: uppercase;
@@ -305,13 +303,17 @@ const SubmitButton = styled.button`
   gap: 12px;
   width: 100%;
   max-width: 320px;
-  transition: all 0.2s;
+  transition:
+    transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    box-shadow ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    background-color: #004699;
+    background-color: ${({ theme }) => theme.colors.support};
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 88, 189, 0.2);
+    box-shadow: ${({ theme }) => theme.shadows.soft};
+    filter: brightness(0.92);
   }
 
   &:disabled {
@@ -335,13 +337,17 @@ const UndoButton = styled.button`
   font-weight: 900;
   font-size: 15px;
   text-transform: uppercase;
-  border: 1px solid rgba(0, 88, 189, 0.24);
+  border: 1px solid ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.sm};
-  transition: all 0.2s;
+  transition:
+    border-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
   cursor: pointer;
 
   &:hover {
-    border-color: rgba(0, 88, 189, 0.42);
-    background-color: rgba(0, 88, 189, 0.05);
+    border-color: ${({ theme }) => theme.colors.support};
+    background-color: ${({ theme }) => theme.colors.supportSoft};
+    transform: translateY(-1px);
   }
 `;

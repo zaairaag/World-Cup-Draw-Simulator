@@ -104,7 +104,7 @@ const Backdrop = styled.div`
   align-items: center;
   justify-content: center;
   padding: ${({ theme }) => theme.spacing.md};
-  background: rgba(26, 28, 28, 0.45);
+  background: ${({ theme }) => theme.colors.overlay};
   backdrop-filter: blur(4px);
 `;
 
@@ -164,12 +164,12 @@ const FieldLabel = styled.label`
 
 const FieldInput = styled.input`
   height: 48px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.sm};
   padding: 0 ${({ theme }) => theme.spacing.md};
   font-size: 15px;
   color: ${({ theme }) => theme.colors.text};
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.surfaceAlt};
   font-family: inherit;
 
   &:focus-visible {
@@ -191,8 +191,8 @@ const SecondaryButton = styled.button`
   padding: 0 ${({ theme }) => theme.spacing.md};
   border: none;
   border-radius: ${({ theme }) => theme.radii.sm};
-  background-color: rgba(0, 169, 80, 0.12);
-  color: #006d31;
+  background-color: ${({ theme }) => theme.colors.accentSoft};
+  color: ${({ theme }) => theme.colors.accentDark};
   font-size: 12px;
   font-weight: 900;
   text-transform: uppercase;
@@ -212,7 +212,7 @@ const PrimaryButton = styled.button`
   border: none;
   border-radius: ${({ theme }) => theme.radii.sm};
   background-color: ${({ theme }) => theme.colors.accent};
-  color: #ffffff;
+  color: ${({ theme }) => theme.colors.headerText};
   font-size: 12px;
   font-weight: 900;
   text-transform: uppercase;

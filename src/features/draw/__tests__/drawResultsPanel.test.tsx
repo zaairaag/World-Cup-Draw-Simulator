@@ -273,6 +273,29 @@ describe('draw results panel', () => {
     expect(within(summaryRegion).getByText(/^política ativa$/i)).toBeInTheDocument();
   });
 
+  it('applies a staggered reveal delay to each rendered group card', () => {
+    render(
+      <ThemeProvider theme={appTheme}>
+        <DrawResultsPanel
+          status="drawn"
+          result={createMockResult(1, ['CAN', 'ECU'], ['SEN', 'NED'])}
+          error={null}
+          canUndoSwap={false}
+          onUndoLastSwap={() => undefined}
+          onSwapTeams={() => undefined}
+          onClearError={() => undefined}
+        />
+      </ThemeProvider>
+    );
+
+    expect(screen.getByRole('region', { name: /grupo a/i }).getAttribute('style')).toContain(
+      '--enter-delay: 0ms'
+    );
+    expect(screen.getByRole('region', { name: /grupo b/i }).getAttribute('style')).toContain(
+      '--enter-delay: 90ms'
+    );
+  });
+
   it('updates the executive summary after the result data changes', () => {
     const view = render(
       <ThemeProvider theme={appTheme}>

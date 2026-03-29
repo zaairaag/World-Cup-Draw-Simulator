@@ -41,9 +41,9 @@ const StickyFooter = styled.footer`
   left: 0;
   right: 0;
   padding: 16px 24px;
-  background-color: rgba(255, 255, 255, 0.98);
+  background-color: ${({ theme }) => theme.colors.surfaceGlass};
   backdrop-filter: blur(12px);
-  border-top: 1px solid #f3f3f3;
+  border-top: 1px solid ${({ theme }) => theme.colors.line};
   z-index: 1000;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -87,7 +87,11 @@ const footerBtnBase = styled.button`
   justify-content: center;
   gap: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    border-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     height: 48px;
@@ -99,12 +103,12 @@ const footerBtnBase = styled.button`
 
 const FooterPrimary = styled(footerBtnBase)`
   background-color: ${({ theme }) => theme.colors.accent};
-  color: white;
+  color: ${({ theme }) => theme.colors.headerText};
   border: none;
 `;
 
 const FooterSecondary = styled(footerBtnBase)`
-  background-color: white;
-  color: #1a1c1c;
-  border: 1px solid #eeeeee;
+  background-color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+  border: 1px solid ${({ theme }) => theme.colors.line};
 `;

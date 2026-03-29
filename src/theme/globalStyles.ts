@@ -7,7 +7,7 @@ export const GlobalStyles = createGlobalStyle`
 
   html {
     font-size: 16px;
-    color-scheme: light;
+    color-scheme: ${({ theme }) => theme.meta.colorScheme};
   }
 
   body {
@@ -19,6 +19,13 @@ export const GlobalStyles = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    transition:
+      background-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.easing},
+      color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
+  }
+
+  #root {
+    min-height: 100vh;
   }
 
   body, button, input, select, textarea {
@@ -72,5 +79,14 @@ export const GlobalStyles = createGlobalStyle`
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 `;

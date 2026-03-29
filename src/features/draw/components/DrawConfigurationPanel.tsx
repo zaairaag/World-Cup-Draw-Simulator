@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import type { DrawSettings, DrawStatus } from '../../../types';
 import {
@@ -142,6 +142,17 @@ export function DrawConfigurationPanel({
   );
 }
 
+const inputSurface = css`
+  width: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.line};
+  border-radius: ${({ theme }) => theme.radii.md};
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  color: ${({ theme }) => theme.colors.text};
+  transition:
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    border-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
+`;
+
 const Panel = styled.div`
   display: grid;
   gap: 16px;
@@ -165,9 +176,14 @@ const PresetButton = styled.button<{ $active: boolean }>`
   font-weight: 800;
   cursor: pointer;
   transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    color 0.2s ease;
+    border-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
 
   &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.focus};
@@ -198,11 +214,7 @@ const FieldLabel = styled.label`
 `;
 
 const FieldInput = styled.input`
-  width: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.line};
-  border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.surfaceAlt};
-  color: ${({ theme }) => theme.colors.text};
+  ${inputSurface}
   padding: 14px 16px;
   font: inherit;
 
@@ -219,11 +231,7 @@ const FieldInput = styled.input`
 `;
 
 const FieldSelect = styled.select`
-  width: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.line};
-  border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.surfaceAlt};
-  color: ${({ theme }) => theme.colors.text};
+  ${inputSurface}
   padding: 14px 16px;
   font: inherit;
 
@@ -231,6 +239,7 @@ const FieldSelect = styled.select`
     outline: 2px solid ${({ theme }) => theme.colors.focus};
     outline-offset: 2px;
   }
+
   &:disabled {
     cursor: not-allowed;
     opacity: 0.6;
@@ -259,10 +268,16 @@ const StatusPill = styled.p<{ $status: DrawStatus }>`
     $status === 'drawn'
       ? theme.colors.accentSoft
       : $status === 'loading'
-        ? 'rgba(244, 197, 66, 0.14)'
+        ? theme.colors.warningBg
         : theme.colors.surfaceMuted};
   color: ${({ theme, $status }) =>
-    $status === 'drawn' ? theme.colors.accentStrong : theme.colors.text};
+    $status === 'drawn'
+      ? theme.colors.accentStrong
+      : $status === 'loading'
+        ? theme.colors.warningText
+        : theme.colors.text};
+  border: 1px solid
+    ${({ theme, $status }) => ($status === 'loading' ? theme.colors.warningBorder : 'transparent')};
   font-size: 0.88rem;
   font-weight: 700;
   text-transform: capitalize;
@@ -272,7 +287,7 @@ const ValidationMessage = styled.p`
   margin: 0;
   padding: 14px 16px;
   border-radius: ${({ theme }) => theme.radii.md};
-  background: rgba(255, 143, 58, 0.12);
-  border: 1px solid rgba(255, 143, 58, 0.32);
-  color: ${({ theme }) => theme.colors.text};
+  background: ${({ theme }) => theme.colors.warningBg};
+  border: 1px solid ${({ theme }) => theme.colors.warningBorder};
+  color: ${({ theme }) => theme.colors.warningText};
 `;

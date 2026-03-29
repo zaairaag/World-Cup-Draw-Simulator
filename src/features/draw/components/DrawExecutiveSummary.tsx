@@ -90,8 +90,12 @@ const SummarySection = styled.section`
   gap: 20px;
   padding: 24px;
   border-radius: ${({ theme }) => theme.radii.xl};
-  background: linear-gradient(135deg, rgba(0, 169, 80, 0.08), rgba(0, 88, 189, 0.06));
-  border: 1px solid rgba(0, 109, 49, 0.08);
+  background: linear-gradient(
+    135deg,
+    ${({ theme }) => theme.colors.accentSoft},
+    ${({ theme }) => theme.colors.supportSoft}
+  );
+  border: 1px solid ${({ theme }) => theme.colors.line};
 `;
 
 const SummaryHeader = styled.div`
@@ -126,7 +130,9 @@ const MetricCard = styled.div`
   gap: 6px;
   padding: 18px 20px;
   border-radius: ${({ theme }) => theme.radii.lg};
-  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid ${({ theme }) => theme.colors.line};
+  background: ${({ theme }) => theme.colors.surfaceGlass};
+  box-shadow: ${({ theme }) => theme.shadows.soft};
 
   strong {
     font-size: 1.25rem;
@@ -157,7 +163,8 @@ const DetailCard = styled.div`
   gap: 12px;
   padding: 18px 20px;
   border-radius: ${({ theme }) => theme.radii.lg};
-  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid ${({ theme }) => theme.colors.line};
+  background: ${({ theme }) => theme.colors.surfaceGlass};
 `;
 
 const DetailTitle = styled.h3`

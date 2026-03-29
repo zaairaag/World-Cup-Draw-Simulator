@@ -132,9 +132,9 @@ const Wrapper = styled.div`
 const SearchInput = styled.input`
   width: 100%;
   height: 48px;
-  border: 1px solid rgba(188, 202, 186, 0.4);
+  border: 1px solid ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.md};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.surfaceAlt};
   padding: 0 16px;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.text};
@@ -145,9 +145,9 @@ const SearchInput = styled.input`
   }
 
   &:focus {
-    background-color: white;
+    background-color: ${({ theme }) => theme.colors.surface};
     border-color: ${({ theme }) => theme.colors.accentDark};
-    box-shadow: 0 0 0 2px rgba(0, 109, 49, 0.1);
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.accentSoft};
     outline: none;
   }
 `;
@@ -161,10 +161,10 @@ const SuggestionList = styled.ul`
   margin: 0;
   padding: 8px;
   list-style: none;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.lg};
-  border: 1px solid rgba(188, 202, 186, 0.1);
-  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+  border: 1px solid ${({ theme }) => theme.colors.line};
+  box-shadow: ${({ theme }) => theme.shadows.soft};
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -201,7 +201,7 @@ const SuggestionCode = styled.span`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.secondary};
   text-transform: uppercase;
-  background-color: #eeeeee;
+  background-color: ${({ theme }) => theme.colors.surfaceMuted};
   padding: 2px 6px;
   border-radius: 4px;
 `;

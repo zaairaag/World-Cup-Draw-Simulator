@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import type { DrawSettings, Team } from '../../../types';
 import type { SessionActivityEntry } from '../hooks/useSessionActivity';
@@ -146,6 +146,18 @@ export const ReadyScene = memo(function ReadyScene({
   );
 });
 
+const sectionEnter = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -162,12 +174,14 @@ const HeroSection = styled.header`
   justify-content: space-between;
   align-items: center;
   gap: 32px;
+  animation: ${sectionEnter} ${({ theme }) => theme.motion.slow}
+    ${({ theme }) => theme.motion.easing} both;
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(0, 109, 49, 0.05), transparent);
+    background: linear-gradient(135deg, ${({ theme }) => theme.colors.accentSoft}, transparent 68%);
     pointer-events: none;
   }
 
@@ -194,7 +208,7 @@ const HeroEyebrow = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 48px;
+  font-size: 32px;
   font-weight: 950;
   color: ${({ theme }) => theme.colors.text};
   letter-spacing: -0.04em;
@@ -202,7 +216,7 @@ const HeroTitle = styled.h1`
   margin-bottom: 16px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 32px;
+    font-size: 24px;
   }
 `;
 
@@ -217,10 +231,11 @@ const HeroDescription = styled.p`
 `;
 
 const StatusBadge = styled.div`
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};
   padding: 24px 32px;
   border-radius: ${({ theme }) => theme.radii.lg};
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  border: 1px solid ${({ theme }) => theme.colors.line};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -249,7 +264,7 @@ const StatusValue = styled.div`
   .divider {
     font-size: 18px;
     font-weight: 700;
-    color: #bccaba;
+    color: ${({ theme }) => theme.colors.secondary};
   }
 `;
 
@@ -282,14 +297,17 @@ const ConfigColumn = styled.div`
 `;
 
 const ConfigCard = styled.section`
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.lg};
   padding: 32px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.line};
   box-shadow: ${({ theme }) => theme.shadows.soft};
   display: flex;
   flex-direction: column;
   gap: 24px;
+  animation: ${sectionEnter} ${({ theme }) => theme.motion.slow}
+    ${({ theme }) => theme.motion.easing} both;
+  animation-delay: 90ms;
 `;
 
 const CardHeader = styled.h2`
@@ -332,24 +350,26 @@ const ValidationBox = styled.div<{ $ready: boolean }>`
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background-color: ${({ $ready }) =>
-    $ready ? 'rgba(0, 169, 80, 0.1)' : 'rgba(255, 143, 58, 0.14)'};
-  color: ${({ $ready, theme }) => ($ready ? theme.colors.accentDark : '#8a4b00')};
+  background-color: ${({ $ready, theme }) =>
+    $ready ? theme.colors.accentSoft : theme.colors.warningBg};
+  color: ${({ $ready, theme }) => ($ready ? theme.colors.accentDark : theme.colors.warningText)};
   border-radius: ${({ theme }) => theme.radii.sm};
   font-size: 14px;
   font-weight: 800;
+  border: 1px solid
+    ${({ $ready, theme }) => ($ready ? theme.colors.accent : theme.colors.warningBorder)};
 
   .material-symbols-rounded {
-    color: ${({ $ready, theme }) => ($ready ? theme.colors.accent : '#ff8f3a')};
+    color: ${({ $ready, theme }) => ($ready ? theme.colors.accent : theme.colors.warningText)};
   }
 `;
 
 const Alert = styled.div`
   padding: 16px 18px;
-  background-color: #fef2f2;
-  border-left: 4px solid #b91c1c;
+  background-color: ${({ theme }) => theme.colors.dangerBg};
+  border-left: 4px solid ${({ theme }) => theme.colors.dangerBorder};
   border-radius: ${({ theme }) => theme.radii.sm};
-  color: #b91c1c;
+  color: ${({ theme }) => theme.colors.dangerText};
   font-size: 14px;
   font-weight: 700;
   line-height: 1.5;
@@ -363,7 +383,7 @@ const DrawButton = styled.button`
     ${({ theme }) => theme.colors.accentDark},
     ${({ theme }) => theme.colors.accent}
   );
-  color: white;
+  color: ${({ theme }) => theme.colors.headerText};
   border: none;
   border-radius: ${({ theme }) => theme.radii.md};
   font-size: 18px;
@@ -390,6 +410,10 @@ const LogBox = styled.div`
   background-color: ${({ theme }) => theme.colors.surfaceAlt};
   padding: 24px;
   border-radius: ${({ theme }) => theme.radii.lg};
+  border: 1px solid ${({ theme }) => theme.colors.line};
+  animation: ${sectionEnter} ${({ theme }) => theme.motion.slow}
+    ${({ theme }) => theme.motion.easing} both;
+  animation-delay: 180ms;
 `;
 
 const LogHeader = styled.h3`
@@ -434,6 +458,10 @@ const TeamsCard = styled.div`
   border-radius: ${({ theme }) => theme.radii.xl};
   padding: 40px;
   height: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.line};
+  animation: ${sectionEnter} ${({ theme }) => theme.motion.slow}
+    ${({ theme }) => theme.motion.easing} both;
+  animation-delay: 120ms;
 `;
 
 const TeamsHeader = styled.div`
@@ -507,20 +535,24 @@ const TeamsGrid = styled.div`
 `;
 
 const TeamMiniCard = styled.div`
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};
   padding: 24px 16px;
   border-radius: ${({ theme }) => theme.radii.lg};
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid ${({ theme }) => theme.colors.line};
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 8px;
-  transition: all 0.2s;
+  transition:
+    transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    box-shadow ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
+  animation: ${sectionEnter} ${({ theme }) => theme.motion.slow}
+    ${({ theme }) => theme.motion.easing} both;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    box-shadow: ${({ theme }) => theme.shadows.soft};
   }
 `;
 
@@ -541,8 +573,8 @@ const TeamOverflowCard = styled.div`
   grid-column: 1 / -1;
   margin-top: 16px;
   padding: 24px;
-  background-color: #eeeeee;
-  border: 2px dashed #bccaba;
+  background-color: ${({ theme }) => theme.colors.surfaceMuted};
+  border: 2px dashed ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.lg};
   display: flex;
   flex-direction: column;
@@ -553,7 +585,7 @@ const TeamOverflowCard = styled.div`
   .avatar-stack {
     width: 40px;
     height: 40px;
-    background-color: #dadada;
+    background-color: ${({ theme }) => theme.colors.surface};
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -561,7 +593,7 @@ const TeamOverflowCard = styled.div`
     font-size: 12px;
     font-weight: 900;
     color: ${({ theme }) => theme.colors.text};
-    border: 2px solid white;
+    border: 2px solid ${({ theme }) => theme.colors.surface};
   }
 
   span {

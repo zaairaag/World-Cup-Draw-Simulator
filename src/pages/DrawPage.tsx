@@ -554,8 +554,8 @@ const PageLayout = styled.div`
 `;
 
 const LocalNav = styled.div`
-  background-color: white;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.line};
   margin-bottom: 0px;
   position: sticky;
   top: ${DESKTOP_STICKY_STACK_HEIGHT}px;
@@ -642,9 +642,9 @@ const ExtendedOptionsView = styled.div`
   flex-direction: column;
   gap: 40px;
   padding: 48px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.xl};
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.line};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 24px 16px;

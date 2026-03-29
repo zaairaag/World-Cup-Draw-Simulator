@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import type { DrawResult, DrawStatus, SwapPayload } from '../../../types';
 
@@ -60,18 +60,6 @@ export const DrawResultsPanel = memo(function DrawResultsPanel({
   return (
     <Panel>
       <ResultHeader>
-        <Breadcrumb aria-label="Navegação de contexto">
-          <span>ge</span>
-          <span className="material-symbols-rounded" aria-hidden="true">
-            chevron_right
-          </span>
-          <span>Copa do Mundo</span>
-          <span className="material-symbols-rounded" aria-hidden="true">
-            chevron_right
-          </span>
-          <span className="active">Resultado</span>
-        </Breadcrumb>
-
         <TitleRow>
           <PageTitle>
             Grupos do Sorteio
@@ -112,11 +100,44 @@ export const DrawResultsPanel = memo(function DrawResultsPanel({
   );
 });
 
+const panelEnter = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const pulse = keyframes`
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+`;
+
+const spin = keyframes`
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
 const Panel = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
-  animation: fadeIn 0.4s ease-out;
+  padding-top: 48px;
+  animation: ${panelEnter} ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.easing};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     gap: 24px;
@@ -129,62 +150,26 @@ const ResultHeader = styled.header`
   gap: 12px;
 `;
 
-const Breadcrumb = styled.nav`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 20px;
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.secondary};
-  letter-spacing: 0.05em;
-
-  .material-symbols-rounded {
-    font-size: 14px;
-    opacity: 0.5;
-  }
-
-  span:not(.active):hover {
-    color: #444;
-    cursor: pointer;
-  }
-
-  .active {
-    color: ${({ theme }) => theme.colors.accent};
-  }
-
-  @media (max-width: 600px) {
-    font-size: 9px;
-    overflow-x: auto;
-    white-space: nowrap;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-`;
-
 const TitleRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
   flex-wrap: wrap;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    gap: 16px;
+    gap: 12px;
   }
 `;
 
 const PageTitle = styled.h1`
   font-family: ${({ theme }) => theme.typography.heading};
-  font-size: 48px;
+  font-size: 32px;
   font-weight: 900;
   color: ${({ theme }) => theme.colors.text};
   letter-spacing: -0.05em;
   margin: 0;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 12px;
   flex-wrap: wrap;
 
@@ -196,7 +181,7 @@ const PageTitle = styled.h1`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 32px;
+    font-size: 24px;
 
     span {
       font-size: 14px;
@@ -210,37 +195,25 @@ const StatusTag = styled.div`
   gap: 8px;
   padding: 6px 14px;
   background-color: ${({ theme }) => theme.colors.accent};
-  color: white;
+  color: ${({ theme }) => theme.colors.headerText};
   border-radius: 6px;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.1em;
-  box-shadow: 0 4px 12px rgba(0, 169, 80, 0.2);
+  box-shadow: ${({ theme }) => theme.shadows.soft};
 
   .dot {
     width: 6px;
     height: 6px;
-    background-color: #fff;
+    background-color: ${({ theme }) => theme.colors.headerText};
     border-radius: 50%;
-    box-shadow: 0 0 8px #fff;
-    animation: pulse 2s infinite;
-
-    @keyframes pulse {
-      0% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.5;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    animation: ${pulse} 2s infinite;
   }
 `;
 
 const Description = styled.p`
-  font-size: 20px;
+  font-size: 16px;
   color: ${({ theme }) => theme.colors.textMuted};
   line-height: 1.6;
   max-width: 800px;
@@ -284,23 +257,18 @@ const LoadingState = styled.div`
   min-height: 500px;
   text-align: center;
   gap: 20px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.xl};
+  box-shadow: ${({ theme }) => theme.shadows.soft};
 `;
 
 const LoadingSpinner = styled.div`
   width: 64px;
   height: 64px;
-  border: 4px solid rgba(0, 169, 80, 0.1);
+  border: 4px solid ${({ theme }) => theme.colors.accentSoft};
   border-top-color: ${({ theme }) => theme.colors.accent};
   border-radius: 50%;
-  animation: spin 1s linear infinite;
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
+  animation: ${spin} 1s linear infinite;
 `;
 
 const LoadingTitle = styled.h2`
@@ -318,7 +286,7 @@ const LoadingText = styled.p`
 
 const EmptyState = styled.div`
   padding: 64px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.xl};
   color: ${({ theme }) => theme.colors.secondary};
   text-align: center;
@@ -336,10 +304,11 @@ const EmptyState = styled.div`
 
 const Alert = styled.div`
   padding: 20px 24px;
-  background-color: #fef2f2;
-  border-left: 4px solid #b91c1c;
-  color: #b91c1c;
+  background-color: ${({ theme }) => theme.colors.dangerBg};
+  border-left: 4px solid ${({ theme }) => theme.colors.dangerBorder};
+  color: ${({ theme }) => theme.colors.dangerText};
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 24px;
+  border-radius: ${({ theme }) => theme.radii.md};
 `;

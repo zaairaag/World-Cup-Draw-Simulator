@@ -11,6 +11,9 @@ const rootDirectory = fileURLToPath(new URL('.', import.meta.url));
 export default tseslint.config(
   {
     ignores: [
+      '.vite',
+      '.vite/**',
+      '**/.vite/**',
       'coverage',
       'dist',
       '**/dist/**',

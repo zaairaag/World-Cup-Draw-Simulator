@@ -104,8 +104,8 @@ const HeaderCard = styled.div`
   gap: 10px;
   padding: 14px;
   border-radius: ${({ theme }) => theme.radii.md};
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.line};
 `;
 
 const HeaderEyebrow = styled.span`
@@ -137,7 +137,7 @@ const RestoreButton = styled.button`
   height: 36px;
   border: none;
   border-radius: ${({ theme }) => theme.radii.sm};
-  background-color: rgba(0, 169, 80, 0.12);
+  background-color: ${({ theme }) => theme.colors.accentSoft};
   color: ${({ theme }) => theme.colors.accentDark};
   font-size: 11px;
   font-weight: 900;
@@ -158,9 +158,10 @@ const GroupRow = styled.div<{ $changed: boolean }>`
   align-items: start;
   padding: 14px;
   border-radius: ${({ theme }) => theme.radii.md};
-  background-color: ${({ $changed }) => ($changed ? 'rgba(255, 143, 58, 0.08)' : 'white')};
+  background-color: ${({ $changed, theme }) =>
+    $changed ? theme.colors.warningBg : theme.colors.surface};
   border: 1px solid
-    ${({ $changed }) => ($changed ? 'rgba(255, 143, 58, 0.2)' : 'rgba(0, 0, 0, 0.05)')};
+    ${({ $changed, theme }) => ($changed ? theme.colors.warningBorder : theme.colors.line)};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     grid-template-columns: 1fr;
@@ -204,7 +205,8 @@ const StatePill = styled.span<{ $changed: boolean }>`
   font-size: 10px;
   font-weight: 900;
   text-transform: uppercase;
-  background-color: ${({ $changed }) =>
-    $changed ? 'rgba(255, 143, 58, 0.16)' : 'rgba(0, 169, 80, 0.12)'};
-  color: ${({ $changed, theme }) => ($changed ? '#8a4b00' : theme.colors.accentDark)};
+  background-color: ${({ $changed, theme }) =>
+    $changed ? theme.colors.warningBg : theme.colors.accentSoft};
+  color: ${({ $changed, theme }) =>
+    $changed ? theme.colors.warningText : theme.colors.accentDark};
 `;

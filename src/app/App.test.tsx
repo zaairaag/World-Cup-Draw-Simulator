@@ -3,9 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { useTheme } from 'styled-components';
 import { describe, expect, it } from 'vitest';
 
+import { STORAGE_KEYS } from '../constants';
+import { appTheme } from '../theme/theme';
 import { App } from './App';
 import { AppProviders } from './AppProviders';
-import { appTheme } from '../theme/theme';
 
 function ThemeProbe() {
   const theme = useTheme();
@@ -76,5 +77,28 @@ describe('App', () => {
 
     expect(screen.getByText('#07aa47')).toBeInTheDocument();
     expect(appTheme.colors.accent).toBe('#07aa47');
+  });
+
+  it('toggles dark mode from the header and persists the selection', async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    expect(document.documentElement).toHaveAttribute('data-theme-mode', 'light');
+
+    await user.click(screen.getByRole('button', { name: /ativar modo escuro/i }));
+
+    expect(document.documentElement).toHaveAttribute('data-theme-mode', 'dark');
+    expect(window.localStorage.getItem(STORAGE_KEYS.themeMode)).toBe('dark');
+    expect(screen.getByRole('button', { name: /ativar modo claro/i })).toBeInTheDocument();
+  });
+
+  it('restores dark mode from persisted preference on startup', () => {
+    window.localStorage.setItem(STORAGE_KEYS.themeMode, 'dark');
+
+    render(<App />);
+
+    expect(document.documentElement).toHaveAttribute('data-theme-mode', 'dark');
+    expect(screen.getByRole('button', { name: /ativar modo claro/i })).toBeInTheDocument();
   });
 });

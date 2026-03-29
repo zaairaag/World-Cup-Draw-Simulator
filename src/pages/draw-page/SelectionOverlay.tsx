@@ -110,9 +110,9 @@ export const SelectionOverlay = memo(function SelectionOverlay({
 
 const SelectionOverLayer = styled.section`
   margin-top: 0px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.xl};
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid ${({ theme }) => theme.colors.line};
   box-shadow: ${({ theme }) => theme.shadows.panel};
   padding: 48px;
   display: flex;
@@ -141,7 +141,7 @@ const OverlayHeader = styled.div`
 `;
 
 const OverlayTitle = styled.h2`
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 900;
   color: ${({ theme }) => theme.colors.text};
 
@@ -154,7 +154,7 @@ const CloseOverlay = styled.button`
   height: 48px;
   padding: 0 32px;
   background-color: ${({ theme }) => theme.colors.accent};
-  color: white;
+  color: ${({ theme }) => theme.colors.headerText};
   border: none;
   border-radius: ${({ theme }) => theme.radii.md};
   font-size: 14px;
@@ -209,7 +209,7 @@ const AssistButton = styled.button`
   height: 48px;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.surfaceAlt};
-  border: 2px dashed #eeeeee;
+  border: 2px dashed ${({ theme }) => theme.colors.line};
   border-radius: ${({ theme }) => theme.radii.md};
   font-size: 13px;
   font-weight: 900;

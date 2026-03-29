@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { useThemeMode } from '../../theme/themeModeContext';
+
 import { ECOSYSTEM_NAV_HEIGHT, DESKTOP_HEADER_HEIGHT, MOBILE_HEADER_HEIGHT } from './stickyHeights';
 
 interface MainHeaderProps {
@@ -37,17 +39,20 @@ export function GlobalNavBar() {
 }
 
 export function MainHeader({ onSearchRequest }: MainHeaderProps) {
+  const { mode, toggleMode } = useThemeMode();
+  const toggleLabel = mode === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro';
+
   return (
     <Header>
       <HeaderContainer>
         <HeaderLeft>
-          <HeaderButton aria-label="Menu">
+          <HeaderButton aria-label="Menu" type="button">
             <span className="material-symbols-rounded" aria-hidden="true">
               menu
             </span>
             <Label aria-hidden="true">MENU</Label>
           </HeaderButton>
-          <HeaderButton aria-label="Times">
+          <HeaderButton aria-label="Times" type="button">
             <span className="material-symbols-rounded" aria-hidden="true">
               shield
             </span>
@@ -64,6 +69,18 @@ export function MainHeader({ onSearchRequest }: MainHeaderProps) {
             </span>
             <Label aria-hidden="true">BUSCAR</Label>
           </SearchButton>
+          <ThemeToggleButton
+            aria-label={toggleLabel}
+            aria-pressed={mode === 'dark'}
+            title={toggleLabel}
+            type="button"
+            onClick={toggleMode}
+          >
+            <span aria-hidden="true" className="material-symbols-rounded">
+              {mode === 'light' ? 'dark_mode' : 'light_mode'}
+            </span>
+            <Label aria-hidden="true">{mode === 'light' ? 'ESCURO' : 'CLARO'}</Label>
+          </ThemeToggleButton>
           <UserBadge>
             <Avatar>Z</Avatar>
             <UserName>Olá, Zaíra</UserName>
@@ -121,33 +138,38 @@ const NavContainer = styled(Container)`
 `;
 
 const EcosystemNav = styled.nav`
-  background: #ffffff;
-  border-bottom: 1px solid #f5f6f7;
+  background: ${({ theme }) => theme.colors.surface};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.line};
   height: ${ECOSYSTEM_NAV_HEIGHT}px;
   display: flex;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 100;
+  transition:
+    background-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.easing},
+    border-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.easing};
 
   & > div {
     overflow-x: auto;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
       display: none;
     }
+
     flex-wrap: nowrap;
     white-space: nowrap;
   }
 `;
 
 const EcosystemLink = styled.a<{ color: string }>`
-  color: ${(props) => props.color};
+  color: ${({ color }) => color};
   font-weight: 700;
   font-size: 15px;
   letter-spacing: -0.02em;
   text-decoration: none;
-  transition: filter 0.2s ease;
+  transition: filter ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
   padding: 4px 0;
   flex-shrink: 0;
 
@@ -158,14 +180,19 @@ const EcosystemLink = styled.a<{ color: string }>`
 `;
 
 const Header = styled.header`
-  background: ${({ theme }) => theme.colors.accent};
+  background: linear-gradient(
+    135deg,
+    ${({ theme }) => theme.colors.accent} 0%,
+    ${({ theme }) => theme.colors.accentStrong} 100%
+  );
   height: ${DESKTOP_HEADER_HEIGHT}px;
   display: flex;
   align-items: center;
   position: sticky;
   top: ${ECOSYSTEM_NAV_HEIGHT}px;
   z-index: 40;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.headerText};
+  box-shadow: ${({ theme }) => theme.shadows.soft};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     height: ${MOBILE_HEADER_HEIGHT}px;
@@ -204,11 +231,14 @@ const HeaderButton = styled.button`
   cursor: pointer;
   height: 38px;
   padding: 0 12px;
-  border-radius: 6px;
-  transition: background 0.15s ease;
+  border-radius: 999px;
+  transition:
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.14);
+    transform: translateY(-1px);
   }
 
   .material-symbols-rounded {
@@ -217,6 +247,7 @@ const HeaderButton = styled.button`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     padding: 0 8px;
+
     & > span:last-child {
       display: none;
     }
@@ -263,27 +294,29 @@ const HeaderRight = styled.div`
   }
 `;
 
-const SearchButton = styled.button`
+const HeaderAction = styled.button`
   background: rgba(255, 255, 255, 0.15);
   height: 38px;
   padding: 0 16px;
   border: none;
-  border-radius: 20px;
+  border-radius: 999px;
   color: inherit;
   font: inherit;
   display: flex;
   align-items: center;
   gap: 8px;
-  min-width: 140px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition:
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
 
   .material-symbols-rounded {
     font-size: 20px;
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.24);
+    transform: translateY(-1px);
   }
 
   @media (max-width: 600px) {
@@ -291,7 +324,19 @@ const SearchButton = styled.button`
     width: 38px;
     padding: 0;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
+  }
+`;
+
+const SearchButton = styled(HeaderAction)`
+  min-width: 140px;
+`;
+
+const ThemeToggleButton = styled(HeaderAction)`
+  min-width: 128px;
+
+  @media (max-width: 600px) {
+    min-width: 0;
   }
 `;
 
@@ -299,14 +344,17 @@ const UserBadge = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  background: ${({ theme }) => theme.colors.accentStrong};
+  background: rgba(5, 113, 45, 0.42);
   padding: 3px 14px 3px 3px;
   border-radius: 20px;
   cursor: pointer;
-  transition: filter 0.15s;
+  transition:
+    transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
 
   &:hover {
-    filter: brightness(0.92);
+    transform: translateY(-1px);
+    background: rgba(5, 113, 45, 0.58);
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
@@ -318,7 +366,8 @@ const UserBadge = styled.div`
 const Avatar = styled.div`
   width: 30px;
   height: 30px;
-  background: #0095ff;
+  background: ${({ theme }) => theme.colors.support};
+  color: ${({ theme }) => theme.colors.headerText};
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -341,8 +390,12 @@ const UserName = styled.span`
 `;
 
 const Footer = styled.footer`
-  background: ${({ theme }) => theme.colors.accent};
-  color: #fff;
+  background: linear-gradient(
+    180deg,
+    ${({ theme }) => theme.colors.accentStrong} 0%,
+    ${({ theme }) => theme.colors.accentDark} 100%
+  );
+  color: ${({ theme }) => theme.colors.headerText};
   padding: 40px 0 32px;
   margin-top: 64px;
 `;
@@ -401,15 +454,19 @@ const FooterNav = styled.nav`
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
 `;
 
 const FooterNavLink = styled.a`
   font-size: 14px;
   font-weight: 700;
-  transition: filter 0.15s;
+  transition:
+    opacity ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
 
   &:hover {
-    filter: brightness(1.3);
+    opacity: 1;
+    transform: translateY(-1px);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -428,7 +485,7 @@ const FooterLegal = styled.div`
 
 const FooterLegalLink = styled.a`
   opacity: 0.8;
-  transition: opacity 0.15s;
+  transition: opacity ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
 
   &:hover {
     opacity: 1;

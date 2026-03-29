@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import styled from 'styled-components';
+import { memo, type CSSProperties } from 'react';
+import styled, { keyframes } from 'styled-components';
 
 import type { Group } from '../../../types';
 import { groupLabel } from '../utils/groupLabel';
@@ -12,9 +12,12 @@ interface DrawGroupCardProps {
 
 export const DrawGroupCard = memo(function DrawGroupCard({ group, index }: DrawGroupCardProps) {
   const label = groupLabel(index);
+  const animationStyle = {
+    '--enter-delay': `${index * 90}ms`
+  } as CSSProperties;
 
   return (
-    <Card role="region" aria-label={label}>
+    <Card role="region" aria-label={label} style={animationStyle}>
       <CardHeader>
         <GroupLabelText>{label}</GroupLabelText>
         <StatusDot aria-hidden="true" />
@@ -36,18 +39,36 @@ export const DrawGroupCard = memo(function DrawGroupCard({ group, index }: DrawG
   );
 });
 
+const cardEnter = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+`;
+
 const Card = styled.div`
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid ${({ theme }) => theme.colors.line};
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  animation: ${cardEnter} ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.easing}
+    both;
+  animation-delay: var(--enter-delay, 0ms);
+  transition:
+    transform ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.easing},
+    box-shadow ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.easing},
+    border-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
 
   &:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    border-color: rgba(0, 169, 80, 0.2);
+    box-shadow: ${({ theme }) => theme.shadows.panel};
+    border-color: ${({ theme }) => theme.colors.accentSoft};
   }
 
   @media (max-width: 600px) {
@@ -75,7 +96,7 @@ const GroupLabelText = styled.h2`
   font-family: ${({ theme }) => theme.typography.heading};
   font-size: 18px;
   font-weight: 800;
-  color: white;
+  color: ${({ theme }) => theme.colors.headerText};
   margin: 0;
   letter-spacing: -0.01em;
 
@@ -87,10 +108,10 @@ const GroupLabelText = styled.h2`
 const StatusDot = styled.div`
   width: 8px;
   height: 8px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.headerText};
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-  opacity: 0.8;
+  opacity: 0.85;
 `;
 
 const TeamList = styled.div`
@@ -103,16 +124,19 @@ const TeamRow = styled.div<{ $isLast: boolean }>`
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  border-bottom: ${({ $isLast }) => ($isLast ? 'none' : '1px solid #f8f8f8')};
-  transition: all 0.2s ease;
+  border-bottom: ${({ $isLast, theme }) => ($isLast ? 'none' : `1px solid ${theme.colors.line}`)};
+  transition:
+    background-color ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing},
+    padding-left ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.easing};
 
   &:hover {
-    background-color: #f9fdfa;
+    background-color: ${({ theme }) => theme.colors.surfaceAlt};
     padding-left: 24px;
   }
 
   @media (max-width: 600px) {
     padding: 12px 16px;
+
     &:hover {
       padding-left: 16px;
     }
@@ -128,8 +152,8 @@ const TeamInfo = styled.div`
 const PotBadge = styled.span`
   font-size: 10px;
   font-weight: 900;
-  color: ${({ theme }) => theme.colors.secondary};
-  background-color: ${({ theme }) => theme.colors.surfaceAlt};
+  color: ${({ theme }) => theme.colors.support};
+  background-color: ${({ theme }) => theme.colors.supportSoft};
   padding: 2px 6px;
   border-radius: 4px;
   letter-spacing: 0.05em;
@@ -159,22 +183,27 @@ const ConfedPill = styled.span`
     background-color: #e8f0fe;
     color: #003d8a;
   }
+
   &[data-confed='CONMEBOL'] {
     background-color: #e6f9ed;
     color: #14532d;
   }
+
   &[data-confed='CAF'] {
     background-color: #fee2e2;
     color: #7f1d1d;
   }
+
   &[data-confed='AFC'] {
     background-color: #ede9fe;
     color: #4c1d95;
   }
+
   &[data-confed='CONCACAF'] {
     background-color: #fef3c7;
     color: #78350f;
   }
+
   &[data-confed='OFC'] {
     background-color: #e6f7f4;
     color: #0f4f4a;
