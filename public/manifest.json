@@ -1,0 +1,22 @@
+{
+  "name": "Sorteio Copa — Simulador",
+  "short_name": "Sorteio Copa",
+  "description": "Desafio técnico frontend: simulador de sorteio da Copa. 32 seleções, regras FIFA-like, trocas manuais e persistência local.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3f3f3",
+  "theme_color": "#07aa47",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
