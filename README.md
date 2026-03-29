@@ -84,7 +84,7 @@ Aplicacao local: `http://localhost:5173`
 
 ---
 
-## 🧪 Como validar (Nível de Teste: S-Rank 🔥)
+## 🧪 Como validar
 
 Ultima execução local de `npm run coverage`:
 
