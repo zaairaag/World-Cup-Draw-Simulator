@@ -342,6 +342,10 @@ const HeaderAction = styled.button`
 
 const SearchButton = styled(HeaderAction)`
   min-width: 140px;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
 `;
 
 const ThemeToggleButton = styled(HeaderAction)`
